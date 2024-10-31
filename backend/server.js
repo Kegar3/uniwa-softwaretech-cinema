@@ -1,85 +1,27 @@
-const express = require('express'); // Εισάγουμε το Express framework, το οποίο χρησιμοποιείται για τη δημιουργία του διακομιστή (server)
-const sequelize = require('./config/config'); // Εισάγουμε τη σύνδεση της βάσης δεδομένων χρησιμοποιώντας το Sequelize
-const User = require('./models/User'); // Εισάγουμε το μοντέλο User για αλληλεπίδραση με τον πίνακα χρηστών στη βάση δεδομένων
-const Reservation = require('./models/Reservation'); // Εισάγουμε το μοντέλο Reservation για αλληλεπίδραση με τον πίνακα κρατήσεων στη βάση δεδομένων
+const express = require('express'); // Φόρτωση του Express
+const sequelize = require('./config/config'); // Φόρτωση της σύνδεσης βάσης δεδομένων
+const userController = require('./controllers/UserController'); // Εισαγωγή του UserController για διαχείριση αιτημάτων χρηστών
 
-const app = express(); // Δημιουργούμε μια Express εφαρμογή (instance του Express framework)
-app.use(express.json()); // Χρησιμοποιούμε middleware για να επιτρέψουμε στην εφαρμογή να διαχειρίζεται JSON δεδομένα στο σώμα των αιτημάτων
+const app = express(); // Δημιουργία Express εφαρμογής
+app.use(express.json()); // Middleware για διαχείριση JSON δεδομένων αιτημάτων
 
-// Συγχρονισμός της βάσης δεδομένων με τα μοντέλα
+// Συγχρονισμός της βάσης δεδομένων
 sequelize
-  .sync({ force: false }) // Δημιουργία των πινάκων (αν δεν υπάρχουν) χωρίς να γίνει επαναδημιουργία τους (force: false)
+  .sync({ force: false })
   .then(() => {
-    console.log('Database & tables synced!'); // Εμφάνιση μηνύματος όταν ο συγχρονισμός ολοκληρωθεί με επιτυχία
+    console.log('Database & tables synced!');
   })
-  .catch((error) => console.error('Unable to sync database:', error)); // Εμφάνιση μηνύματος σε περίπτωση αποτυχίας
+  .catch((error) => console.error('Unable to sync database:', error));
 
-// Δημιουργία νέου χρήστη
-app.post('/users', async (req, res) => { // Χρήση της HTTP μεθόδου POST για την προσθήκη νέου χρήστη
-  try {
-    const user = await User.create(req.body); // Δημιουργία νέου χρήστη με βάση τα δεδομένα που παρέχονται στο σώμα του αιτήματος
-    res.json(user); // Αποστολή του νέου χρήστη ως απάντηση σε μορφή JSON
-  } catch (error) {
-    res.status(500).json({ error: error.message }); // Αποστολή μηνύματος λάθους σε περίπτωση αποτυχίας
-  }
-});
+// Routes χρηστών, που χρησιμοποιούν το UserController
+app.post('/users', userController.createUser);
+app.get('/users', userController.getAllUsers);
+app.get('/users/:id', userController.getUserById);
+app.put('/users/:id', userController.updateUser);
+app.delete('/users/:id', userController.deleteUser);
 
-// Επιστροφή όλων των χρηστών
-app.get('/users', async (req, res) => { // Χρήση της HTTP μεθόδου GET για να λάβουμε όλους τους χρήστες
-  try {
-    const users = await User.findAll(); // Εύρεση όλων των χρηστών από τον πίνακα Users
-    res.json(users); // Αποστολή όλων των χρηστών ως απάντηση σε μορφή JSON
-  } catch (error) {
-    res.status(500).json({ error: error.message }); // Αποστολή μηνύματος λάθους σε περίπτωση αποτυχίας
-  }
-});
-
-// Επιστροφή χρήστη βάσει του ID
-app.get('/users/:id', async (req, res) => { // Χρήση της HTTP μεθόδου GET για να λάβουμε έναν συγκεκριμένο χρήστη βάσει του ID του
-  try {
-    const user = await User.findByPk(req.params.id); // Εύρεση χρήστη με βάση το primary key (ID) που παρέχεται στη διαδρομή
-    if (user) {
-      res.json(user); // Αποστολή του χρήστη σε μορφή JSON
-    } else {
-      res.status(404).json({ error: 'User not found' }); // Αποστολή μηνύματος αν ο χρήστης δεν βρεθεί
-    }
-  } catch (error) {
-    res.status(500).json({ error: error.message }); // Αποστολή μηνύματος λάθους σε περίπτωση αποτυχίας
-  }
-});
-
-// Ενημέρωση χρήστη βάσει του ID
-app.put('/users/:id', async (req, res) => { // Χρήση της HTTP μεθόδου PUT για να ενημερώσουμε έναν χρήστη βάσει του ID του
-  try {
-    const user = await User.findByPk(req.params.id); // Εύρεση χρήστη με βάση το primary key (ID)
-    if (user) {
-      await user.update(req.body); // Ενημέρωση του χρήστη με βάση τα δεδομένα που παρέχονται στο σώμα του αιτήματος
-      res.json(user); // Αποστολή του ενημερωμένου χρήστη σε μορφή JSON
-    } else {
-      res.status(404).json({ error: 'User not found' }); // Αποστολή μηνύματος αν ο χρήστης δεν βρεθεί
-    }
-  } catch (error) {
-    res.status(500).json({ error: error.message }); // Αποστολή μηνύματος λάθους σε περίπτωση αποτυχίας
-  }
-});
-
-// Διαγραφή χρήστη βάσει του ID
-app.delete('/users/:id', async (req, res) => { // Χρήση της HTTP μεθόδου DELETE για να διαγράψουμε έναν χρήστη βάσει του ID του
-  try {
-    const user = await User.findByPk(req.params.id); // Εύρεση χρήστη με βάση το primary key (ID)
-    if (user) {
-      await user.destroy(); // Διαγραφή του χρήστη
-      res.json({ message: 'User deleted successfully' }); // Αποστολή μηνύματος επιτυχούς διαγραφής
-    } else {
-      res.status(404).json({ error: 'User not found' }); // Αποστολή μηνύματος αν ο χρήστης δεν βρεθεί
-    }
-  } catch (error) {
-    res.status(500).json({ error: error.message }); // Αποστολή μηνύματος λάθους σε περίπτωση αποτυχίας
-  }
-});
-
-// Καθορισμός του port που θα ακούει ο διακομιστής
+// Εκκίνηση του διακομιστή
 const PORT = 3000;
-app.listen(PORT, () => { // Εκκίνηση του διακομιστή
-  console.log(`Server is running on http://localhost:${PORT}`); // Εμφάνιση μηνύματος όταν ο διακομιστής εκκινήσει
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });

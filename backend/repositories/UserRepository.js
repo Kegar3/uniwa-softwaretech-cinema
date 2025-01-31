@@ -3,7 +3,12 @@ const User = require('../models/User'); // Εισαγωγή του μοντέλ�
 
 // Δημιουργία νέου χρήστη
 exports.createUser = async (userData) => {
-  return await User.create(userData); // Δημιουργεί και αποθηκεύει ένα νέο χρήστη στη βάση δεδομένων
+  return await User.create({
+    username: userData.username,
+    password: userData.password,
+    email: userData.email,
+    role: userData.role || 'user', // Προεπιλεγμένος ρόλος αν δεν δοθεί από το request
+  }); // Δημιουργεί και αποθηκεύει ένα νέο χρήστη στη βάση δεδομένων
 };
 
 // Ανάκτηση όλων των χρηστών
@@ -24,4 +29,9 @@ exports.updateUser = async (user, updatedData) => {
 // Διαγραφή χρήστη
 exports.deleteUser = async (user) => {
   return await user.destroy(); // Διαγράφει τον χρήστη από τον πίνακα
+};
+
+// Ανάκτηση χρήστη βάσει username
+exports.findByUsername = async (username) => {
+  return await User.findOne({ where: { username } });
 };

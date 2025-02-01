@@ -1,6 +1,5 @@
 const express = require('express'); // Φόρτωση του Express
 const sequelize = require('./config/config'); // Φόρτωση της σύνδεσης βάσης δεδομένων
-const authMiddleware = require('./middlewares/authMiddleware');
 
 const UserRoutes = require('./routes/UserRoutes');
 const ReservationRoutes = require('./routes/ReservationRoutes'); // Εισαγωγή νέων routes για reservations

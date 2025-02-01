@@ -6,6 +6,7 @@ const UserRoutes = require('./routes/UserRoutes');
 const ReservationRoutes = require('./routes/ReservationRoutes'); // Εισαγωγή νέων routes για reservations
 const AuthController = require('./controllers/AuthController');
 
+require('dotenv').config(); // Load environment variables from .env file
 
 const app = express(); // Δημιουργία Express εφαρμογής
 app.use(express.json()); // Middleware για διαχείριση JSON δεδομένων αιτημάτων
@@ -26,7 +27,7 @@ app.use('/reservations', ReservationRoutes);
 app.post('/login', AuthController.login);
 
 // Εκκίνηση του διακομιστή
-const PORT = 3000;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

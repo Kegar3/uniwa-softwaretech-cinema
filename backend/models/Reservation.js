@@ -23,6 +23,11 @@ const Reservation = sequelize.define('Reservation', {
       key: 'id',
     },
   },
+  showtime: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+  },
 });
 
 User.hasMany(Reservation, { foreignKey: 'user_id' });

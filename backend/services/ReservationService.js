@@ -1,6 +1,7 @@
 const ReservationRepository = require('../repositories/ReservationRepository');
 const User = require('../models/User');
 const Movie = require('../models/Movie');
+const Showtime = require('../models/Showtime');
 
 class ReservationService {
   // Δημιουργία νέας κράτησης με ελέγχους
@@ -36,18 +37,18 @@ class ReservationService {
   }
 
     // Ανάκτηση όλων των κρατήσεων
-    async getAllReservations() {
-      return await ReservationRepository.getAllReservations();
+  async getAllReservations() {
+    return await ReservationRepository.getAllReservations();
+  }
+
+  // Ανάκτηση μιας κράτησης με βάση το ID
+  async getReservationById(reservationId) {
+    const reservation = await ReservationRepository.getReservationById(reservationId);
+    if (!reservation) {
+      throw new Error('Reservation not found');
     }
-  
-    // Ανάκτηση μιας κράτησης με βάση το ID
-    async getReservationById(reservationId) {
-      const reservation = await ReservationRepository.getReservationById(reservationId);
-      if (!reservation) {
-        throw new Error('Reservation not found');
-      }
-      return reservation;
-    }  
+    return reservation;
+  }
 
   // Ανάκτηση κρατήσεων συγκεκριμένου χρήστη
   async getReservationsByUserId(userId) {
@@ -63,9 +64,13 @@ class ReservationService {
 
     // Αν υπάρχει νέα θέση, ελέγχει αν είναι διαθέσιμη
     if (updatedData.seat) {
-      const existingReservation = await ReservationRepository.getReservationByMovieAndSeat(reservation.movie_id, updatedData.seat);
+      const existingReservation = await ReservationRepository.getReservationByShowtimeAndSeat(
+        reservation.showtime_id,
+        updatedData.seat
+      );
+
       if (existingReservation && existingReservation.id !== reservationId) {
-        throw new Error('This seat is already booked for this movie');
+        throw new Error('This seat is already booked for this showtime');
       }
     }
 
@@ -77,6 +82,12 @@ class ReservationService {
     const reservation = await ReservationRepository.getReservationById(reservationId);
     if (!reservation) {
       throw new Error('Reservation not found');
+    }
+
+    // Αν η κράτηση υπάρχει, επιστρέφουμε τη θέση στο Showtime
+    const showtime = await Showtime.findByPk(reservation.showtime_id);
+    if (showtime) {
+      await showtime.update({ available_seats: showtime.available_seats + 1 });
     }
 
     return await ReservationRepository.deleteReservation(reservationId);

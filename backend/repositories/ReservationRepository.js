@@ -43,11 +43,6 @@ class ReservationRepository {
     await reservation.destroy();
     return { message: 'Reservation deleted successfully' };
   }
-
-  // Εύρεση κράτησης για την ίδια ταινία & θέση
-  async getReservationByMovieAndSeat(movie_id, seat) {
-    return await Reservation.findOne({ where: { movie_id, seat } });
-  }
 }
 
 module.exports = new ReservationRepository();

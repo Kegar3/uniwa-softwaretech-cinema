@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const Reservation = require('../models/Reservation'); // Χρειάζεται για να ελέγχουμε τις κρατήσεις
+const Reservation = require('../models/Reservation'); 
 
 // Middleware για έλεγχο αν ο χρήστης είναι authenticated
 exports.verifyToken = (req, res, next) => {
@@ -27,32 +27,34 @@ exports.isAdmin = (req, res, next) => {
     next();
 };
 
-// Middleware για έλεγχο αν ο χρήστης είναι Admin ή βλέπει τις δικές του κρατήσεις
+// Middleware για έλεγχο αν ο χρήστης είναι Admin ή ο ιδιοκτήτης της κράτησης
 exports.isOwnerOrAdmin = async (req, res, next) => {
     try {
         if (!req.user) {
             return res.status(403).json({ error: 'Unauthorized access' });
         }
 
+        // Αν είναι admin, του επιτρέπουμε πρόσβαση
         if (req.user.role === 'admin') {
-            return next(); // Αν είναι admin, επιτρέπεται
-        }
-
-        const userId = parseInt(req.params.userId) || parseInt(req.body.user_id);
-
-        // Έλεγχος αν ο χρήστης προσπαθεί να προσπελάσει τα δικά του δεδομένα
-        if (userId && userId === req.user.id) {
             return next();
         }
 
-        // Αν υπάρχει `reservationId`, ελέγχουμε αν η κράτηση ανήκει στον χρήστη
+        // Αν προσπαθεί να δει τις δικές του κρατήσεις με βάση το `userId`
+        if (req.params.userId && parseInt(req.params.userId) === req.user.id) {
+            return next();
+        }
+
+        // Αν προσπαθεί να προσπελάσει μια συγκεκριμένη κράτηση
         if (req.params.id) {
             const reservation = await Reservation.findByPk(req.params.id);
+            
             if (!reservation) {
                 return res.status(404).json({ error: 'Reservation not found' });
             }
+
+            // Αν η κράτηση ανήκει στον χρήστη, επιτρέπεται
             if (reservation.user_id === req.user.id) {
-                return next(); // Αν ο χρήστης είναι ο κάτοχος της κράτησης, επιτρέπεται
+                return next();
             }
         }
 

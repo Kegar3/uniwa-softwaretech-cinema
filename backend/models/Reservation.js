@@ -17,10 +17,6 @@ const Reservation = sequelize.define('Reservation', {
       key: 'id',
     },
   },
-  seat: {
-    type: DataTypes.STRING(10),
-    allowNull: false,
-  },
   user_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -29,12 +25,17 @@ const Reservation = sequelize.define('Reservation', {
       key: 'id',
     },
   },
+  seat: {
+    type: DataTypes.STRING(10),
+    allowNull: false,
+  },
 });
 
-User.hasMany(Reservation, { foreignKey: 'user_id' });
-Reservation.belongsTo(User, { foreignKey: 'user_id' });
-
-Showtime.hasMany(Reservation, { foreignKey: 'showtime_id' });
+// Σχέσεις
+Showtime.hasMany(Reservation, { foreignKey: 'showtime_id', onDelete: 'CASCADE' });
 Reservation.belongsTo(Showtime, { foreignKey: 'showtime_id' });
+
+User.hasMany(Reservation, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+Reservation.belongsTo(User, { foreignKey: 'user_id' });
 
 module.exports = Reservation;

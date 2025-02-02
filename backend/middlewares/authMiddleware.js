@@ -26,3 +26,17 @@ exports.verifyToken = (req, res, next) => {
     }
         next();
   };
+
+  // Middleware για να ελέγξουμε αν ο χρήστης είναι Admin ή αν βλέπει τις δικές του κρατήσεις
+exports.isOwnerOrAdmin = (req, res, next) => {
+    if (req.user.role === 'admin') {
+        return next(); // Αν είναι admin, μπορεί να δει τα πάντα
+    }
+
+    // Αν ο χρήστης δεν είναι admin, επιτρέπουμε να βλέπει ΜΟΝΟ τις δικές του κρατήσεις
+    if (req.params.userId && parseInt(req.params.userId) !== req.user.id) {
+        return res.status(403).json({ error: 'Access denied. You can only view your own reservations.' });
+    }
+
+    next();
+};

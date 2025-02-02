@@ -3,6 +3,7 @@ const sequelize = require('./config/config'); // Φόρτωση της σύνδ�
 
 const UserRoutes = require('./routes/UserRoutes');
 const ReservationRoutes = require('./routes/ReservationRoutes'); // Εισαγωγή νέων routes για reservations
+const MovieRoutes = require('./routes/MovieRoutes'); // Εισαγωγή νέων routes για ταινίες
 const AuthController = require('./controllers/AuthController');
 
 require('dotenv').config(); // Load environment variables from .env file
@@ -18,9 +19,10 @@ sequelize
   })
   .catch((error) => console.error('Unable to sync database:', error));
   
-// Routes χρηστών & κρατήσεων
+// Routes χρηστών, κρατήσεων & ταινιών
 app.use('/users', UserRoutes);
 app.use('/reservations', ReservationRoutes);
+app.use('/movies', MovieRoutes);
 
 // Authentication route
 app.post('/login', AuthController.login);

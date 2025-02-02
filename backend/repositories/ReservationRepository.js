@@ -21,6 +21,11 @@ class ReservationRepository {
     return await Reservation.findAll({ where: { user_id: userId } });
   }
 
+  // Ανάκτηση μιας κράτησης με βάση το ID προβολής και τη θέση
+  async getReservationByShowtimeAndSeat(showtime_id, seat) {
+    return await Reservation.findOne({ where: { showtime_id, seat } });
+  }
+
   // Ενημέρωση κράτησης
   async updateReservation(reservationId, updatedData) {
     const reservation = await Reservation.findByPk(reservationId);

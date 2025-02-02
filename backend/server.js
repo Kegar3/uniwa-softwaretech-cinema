@@ -4,6 +4,7 @@ const sequelize = require('./config/config'); // Φόρτωση της σύνδ�
 const UserRoutes = require('./routes/UserRoutes');
 const ReservationRoutes = require('./routes/ReservationRoutes'); // Εισαγωγή νέων routes για reservations
 const MovieRoutes = require('./routes/MovieRoutes'); // Εισαγωγή νέων routes για ταινίες
+const ShowtimeRoutes = require('./routes/ShowtimeRoutes');
 const AuthController = require('./controllers/AuthController');
 
 require('dotenv').config(); // Load environment variables from .env file
@@ -23,6 +24,7 @@ sequelize
 app.use('/users', UserRoutes);
 app.use('/reservations', ReservationRoutes);
 app.use('/movies', MovieRoutes);
+app.use('/showtimes', ShowtimeRoutes);
 
 // Authentication route
 app.post('/login', AuthController.login);

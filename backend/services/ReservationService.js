@@ -5,39 +5,33 @@ const Movie = require('../models/Movie');
 class ReservationService {
   // Δημιουργία νέας κράτησης με ελέγχους
   async createReservation(reservationData) {
-    const { movie_id, seat, user_id, showtime } = reservationData;
+    const { showtime_id, seat, user_id } = reservationData;
 
-    // 1 Έλεγχος αν λείπουν υποχρεωτικά πεδία
-    if (!movie_id || !seat || !user_id || !showtime) {
-      throw new Error('Missing required fields: movie_id, seat, user_id, showtime');
+    // 1. Έλεγχος αν λείπουν υποχρεωτικά πεδία
+    if (!showtime_id || !seat || !user_id) {
+      throw new Error('Missing required fields: showtime_id, seat, user_id');
     }
 
-    // 2 Έλεγχος αν υπάρχει ήδη κράτηση για την ίδια θέση στην ίδια ταινία
-    const existingReservation = await ReservationRepository.getReservationByMovieAndSeat(movie_id, seat);
+    // 2. Έλεγχος αν υπάρχει η προβολή
+    const showtime = await Showtime.findByPk(showtime_id);
+    if (!showtime) {
+      throw new Error('Showtime not found.');
+    }
+
+    // 3. Έλεγχος αν η θέση είναι ήδη κρατημένη για αυτή την προβολή
+    const existingReservation = await ReservationRepository.getReservationByShowtimeAndSeat(showtime_id, seat);
     if (existingReservation) {
-      throw new Error('This seat is already booked for this movie.');
+      throw new Error('This seat is already booked for this showtime.');
     }
 
-    // 3 Έλεγχος αν ο χρήστης υπάρχει
-    const user = await User.findByPk(user_id);
-    if (!user) {
-      throw new Error('User not found.');
+    // 4. Έλεγχος αν υπάρχουν διαθέσιμες θέσεις
+    if (showtime.available_seats <= 0) {
+      throw new Error('No available seats for this showtime.');
     }
 
-    // 4 Έλεγχος αν η ταινία υπάρχει στη βάση
-    const movie = await Movie.findByPk(movie_id);
-    if (!movie) {
-      throw new Error('Movie not found.');
-    }
+    // 5. Μείωση διαθέσιμων θέσεων
+    await showtime.update({ available_seats: showtime.available_seats - 1 });
 
-    // 5 Έλεγχος αν το showtime είναι στο μέλλον
-    const showtimeDate = new Date(showtime);
-    const now = new Date();
-    if (showtimeDate <= now) {
-      throw new Error('Showtime must be in the future.');
-    }
-
-    // 6 Δημιουργία νέας κράτησης
     return await ReservationRepository.createReservation(reservationData);
   }
 

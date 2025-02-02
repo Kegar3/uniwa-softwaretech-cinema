@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/config');
 const User = require('./User');
-const Movie = require('./Movie');
+const Showtime = require('./Showtime');
 
 const Reservation = sequelize.define('Reservation', {
   id: {
@@ -9,13 +9,17 @@ const Reservation = sequelize.define('Reservation', {
     autoIncrement: true,
     primaryKey: true,
   },
-  movie_id: {
+  showtime_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: Movie,  // Πρέπει να υπάρχει το Movie Model εδώ
+      model: Showtime,
       key: 'id',
     },
+  },
+  seat: {
+    type: DataTypes.STRING(10),
+    allowNull: false,
   },
   user_id: {
     type: DataTypes.INTEGER,
@@ -25,21 +29,12 @@ const Reservation = sequelize.define('Reservation', {
       key: 'id',
     },
   },
-  seat: {
-    type: DataTypes.STRING(10),
-    allowNull: false,
-  },
-  showtime: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  },
 });
 
-// Σχέσεις μεταξύ των μοντέλων
 User.hasMany(Reservation, { foreignKey: 'user_id' });
 Reservation.belongsTo(User, { foreignKey: 'user_id' });
 
-Movie.hasMany(Reservation, { foreignKey: 'movie_id' });
-Reservation.belongsTo(Movie, { foreignKey: 'movie_id' });
+Showtime.hasMany(Reservation, { foreignKey: 'showtime_id' });
+Reservation.belongsTo(Showtime, { foreignKey: 'showtime_id' });
 
 module.exports = Reservation;

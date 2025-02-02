@@ -11,7 +11,7 @@ class ReservationController {
     }
   }
 
-  // Ανάκτηση όλων των κρατήσεων (Μόνο Admins)
+  // Ανάκτηση όλων των κρατήσεων (Μόνο Admins - έλεγχος μέσω middleware)
   async getAllReservations(req, res) {
     try {
       const reservations = await ReservationService.getAllReservations();
@@ -21,7 +21,7 @@ class ReservationController {
     }
   }
 
-  // Ανάκτηση μιας κράτησης με βάση το ID
+  // Ανάκτηση μιας κράτησης με βάση το ID (Μόνο ο κάτοχος ή Admins - έλεγχος μέσω middleware)
   async getReservationById(req, res) {
     try {
       const reservation = await ReservationService.getReservationById(req.params.id);
@@ -31,12 +31,9 @@ class ReservationController {
     }
   }
 
-  // Ανάκτηση κρατήσεων συγκεκριμένου χρήστη (Μόνο ο ίδιος ο χρήστης ή Admins)
+  // Ανάκτηση κρατήσεων συγκεκριμένου χρήστη (Μόνο ο ίδιος ο χρήστης ή Admins - middleware)
   async getReservationsByUserId(req, res) {
     try {
-      if (req.user.role !== 'admin' && req.user.id !== parseInt(req.params.userId)) {
-        return res.status(403).json({ error: 'Access denied' });
-      }
       const reservations = await ReservationService.getReservationsByUserId(req.params.userId);
       res.json(reservations);
     } catch (error) {
@@ -44,25 +41,22 @@ class ReservationController {
     }
   }
 
-  // Ενημέρωση κράτησης (Μόνο ο ίδιος ο χρήστης ή Admins)
+  // Ενημέρωση κράτησης (Μόνο ο κάτοχος ή Admins - middleware)
   async updateReservation(req, res) {
     try {
-      if (req.user.role !== 'admin' && req.user.id !== parseInt(req.body.user_id)) {
-        return res.status(403).json({ error: 'Access denied' });
-      }
-      const updatedReservation = await ReservationService.updateReservation(req.params.id, req.body);
+      const updatedReservation = await ReservationService.updateReservation(req.params.id, req.user.id, {
+        ...req.body,
+        user_role: req.user.role, // **Προσθέτουμε το role στο request**
+      });
       res.json(updatedReservation);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   }
 
-  // Διαγραφή κράτησης (Μόνο Admins)
+  // Διαγραφή κράτησης (Μόνο ο κάτοχος ή Admins - middleware)
   async deleteReservation(req, res) {
     try {
-      if (req.user.role !== 'admin') {
-        return res.status(403).json({ error: 'Access denied' });
-      }
       await ReservationService.deleteReservation(req.params.id);
       res.json({ message: 'Reservation deleted successfully' });
     } catch (error) {

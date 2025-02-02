@@ -16,11 +16,6 @@ class ReservationRepository {
     return await Reservation.findByPk(reservationId);
   }
 
-  // Επιστροφή κράτησης βάσει ταινίας και θέσης (για έλεγχο μοναδικότητας)
-  async getReservationByMovieAndSeat(movie, seat) {
-    return await Reservation.findOne({ where: { movie, seat } });
-  }
-
   // Ανάκτηση κρατήσεων συγκεκριμένου χρήστη
   async getReservationsByUserId(userId) {
     return await Reservation.findAll({ where: { user_id: userId } });
@@ -42,6 +37,11 @@ class ReservationRepository {
 
     await reservation.destroy();
     return { message: 'Reservation deleted successfully' };
+  }
+
+  // Εύρεση κράτησης για την ίδια ταινία & θέση
+  async getReservationByMovieAndSeat(movie_id, seat) {
+    return await Reservation.findOne({ where: { movie_id, seat } });
   }
 }
 

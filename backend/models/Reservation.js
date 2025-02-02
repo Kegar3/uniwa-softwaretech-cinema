@@ -13,7 +13,7 @@ const Reservation = sequelize.define('Reservation', {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: Movie,
+      model: Movie,  // Πρέπει να υπάρχει το Movie Model εδώ
       key: 'id',
     },
   },
@@ -35,6 +35,7 @@ const Reservation = sequelize.define('Reservation', {
   },
 });
 
+// Σχέσεις μεταξύ των μοντέλων
 User.hasMany(Reservation, { foreignKey: 'user_id' });
 Reservation.belongsTo(User, { foreignKey: 'user_id' });
 

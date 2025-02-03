@@ -62,6 +62,17 @@ class MovieController {
     }
   }
 
+  // Ανάκτηση μελλοντικών προβολών μιας ταινίας
+  async getMovieShowtimes(req, res) {
+    try {
+        const movieId = req.params.id;
+        const showtimes = await MovieService.getMovieShowtimes(movieId);
+        res.json(showtimes);
+    } catch (error) {
+        res.status(404).json({ error: error.message });
+    }
+  }
+
 }
 
 module.exports = new MovieController();

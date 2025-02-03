@@ -1,3 +1,4 @@
+const { Op } = require('sequelize'); 
 const Showtime = require('../models/Showtime');
 
 class ShowtimeRepository {
@@ -47,6 +48,19 @@ class ShowtimeRepository {
       limit,
       offset,
       order: [['start_time', 'ASC']], // Ταξινόμηση με βάση την ώρα
+    });
+  }
+
+  // Επιστρέφει τις προβολές με βάση το movie_id και την ώρα που είναι μεγαλύτερη από την τρέχουσα
+  async getUpcomingShowtimesByMovie(movieId) {
+    const now = new Date();
+    return await Showtime.findAll({
+        where: {
+            movie_id: movieId,
+            start_time: { [Op.gt]: now }, // Μόνο μελλοντικές προβολές
+        },
+        order: [['start_time', 'ASC']], // Ταξινόμηση χρονικά
+        attributes: ['id', 'hall', 'start_time', 'available_seats'],
     });
   }
 }

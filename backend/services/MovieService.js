@@ -1,4 +1,5 @@
 const MovieRepository = require('../repositories/MovieRepository');
+const ShowtimeRepository = require('../repositories/ShowTimeRepository');
 
 class MovieService {
   // Δημιουργία νέας ταινίας
@@ -40,6 +41,17 @@ class MovieService {
     }
     return result;
   }
+
+  async getMovieShowtimes(movieId) {
+    const showtimes = await ShowtimeRepository.getUpcomingShowtimesByMovie(movieId);
+
+    if (showtimes.length === 0) {
+        throw new Error('No upcoming showtimes for this movie');
+    }
+
+    return showtimes;
+  }
+
 }
 
 module.exports = new MovieService();

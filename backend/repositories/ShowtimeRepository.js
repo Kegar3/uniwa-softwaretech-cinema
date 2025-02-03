@@ -8,11 +8,6 @@ class ShowtimeRepository {
     return await Showtime.create(showtimeData);
   }
 
-  // Επιστρέφει όλες τις προβολές
-  async getAllShowtimes() {
-    return await Showtime.findAll();
-  }
-
   // Επιστρέφει την προβολή με βάση το showtimeId
   async getShowtimeById(showtimeId) {
     return await Showtime.findByPk(showtimeId);
@@ -62,6 +57,30 @@ class ShowtimeRepository {
         order: [['start_time', 'ASC']], // Ταξινόμηση χρονικά
         attributes: ['id', 'hall', 'start_time', 'available_seats'],
     });
+  }
+
+  // Επιστρέφει τις προβολές με βάση το movie_id και την ώρα που είναι μεγαλύτερη από την τρέχουσα
+  async getAllShowtimes({ page = 1, limit = 10, movie_id, hall, date }) {
+    const offset = (page - 1) * limit;
+    const whereClause = {};
+
+    if (movie_id) whereClause.movie_id = movie_id;
+    if (hall) whereClause.hall = hall.toString();
+    if (date) whereClause.start_time = { [Op.between]: [`${date} 00:00:00`, `${date} 23:59:59`] };
+
+    const showtimes = await Showtime.findAndCountAll({
+      where: whereClause,
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      order: [['start_time', 'ASC']],
+    });
+
+    return {
+      totalShowtimes: showtimes.count,
+      totalPages: Math.ceil(showtimes.count / limit),
+      currentPage: parseInt(page),
+      showtimes: showtimes.rows,
+    };
   }
 }
 

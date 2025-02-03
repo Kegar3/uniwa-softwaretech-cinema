@@ -1,4 +1,4 @@
-const ShowtimeRepository = require('../repositories/ShowtimeRepository');
+const ShowtimeRepository = require('../repositories/ShowTimeRepository');
 const MovieRepository = require('../repositories/MovieRepository');
 
 class ShowtimeService {
@@ -33,10 +33,10 @@ class ShowtimeService {
     return await ShowtimeRepository.createShowtime(showtimeData);
   }
 
-  // Ανάκτηση όλων των προβολών
-  async getAllShowtimes() {
-    return await ShowtimeRepository.getAllShowtimes();
-  }
+  // // Ανάκτηση όλων των προβολών
+  // async getAllShowtimes() {
+  //   return await ShowtimeRepository.getAllShowtimes();
+  // }
 
   // Ανάκτηση προβολής βάσει ID
   async getShowtimeById(showtimeId) {
@@ -88,6 +88,11 @@ class ShowtimeService {
   // Ανάκτηση προβολών με παγιωμένη σειρά και δυνατότητα παγιωμένου limit και offset
   async getPaginatedShowtimes(page, limit) {
     return await ShowtimeRepository.getPaginatedShowtimes(page, limit);
+  }
+
+  // Ανάκτηση μελλοντικών προβολών βάσει ID ταινίας
+  async getAllShowtimes(query) {
+    return await ShowtimeRepository.getAllShowtimes(query);
   }
 }
 

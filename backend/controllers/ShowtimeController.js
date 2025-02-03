@@ -14,7 +14,8 @@ class ShowtimeController {
   // Ανάκτηση όλων των προβολών
   async getAllShowtimes(req, res) {
     try {
-      const showtimes = await ShowtimeService.getAllShowtimes();
+      //console.log("Controller: Received query params", req.query);
+      const showtimes = await ShowtimeService.getAllShowtimes(req.query);
       res.json(showtimes);
     } catch (error) {
       res.status(500).json({ error: error.message });

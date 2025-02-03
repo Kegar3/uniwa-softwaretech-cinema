@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/', authMiddleware.verifyToken, authMiddleware.isAdmin, ShowtimeController.createShowtime);
 
 // Ανάκτηση όλων των προβολών
-//router.get('/', ShowtimeController.getAllShowtimes);
+router.get('/', ShowtimeController.getAllShowtimes);
 
 // Ανάκτηση συγκεκριμένης προβολής βάσει ID
 router.get('/:id', ShowtimeController.getShowtimeById);

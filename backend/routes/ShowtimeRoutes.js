@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/', authMiddleware.verifyToken, authMiddleware.isAdmin, ShowtimeController.createShowtime);
 
 // Ανάκτηση όλων των προβολών
-router.get('/', ShowtimeController.getAllShowtimes);
+//router.get('/', ShowtimeController.getAllShowtimes);
 
 // Ανάκτηση συγκεκριμένης προβολής βάσει ID
 router.get('/:id', ShowtimeController.getShowtimeById);
@@ -18,5 +18,8 @@ router.put('/:id', authMiddleware.verifyToken, authMiddleware.isAdmin, ShowtimeC
 
 // Διαγραφή προβολής (μόνο Admins)
 router.delete('/:id', authMiddleware.verifyToken, authMiddleware.isAdmin, ShowtimeController.deleteShowtime);
+
+// Ανάκτηση προβολών βάσει ID ταινίας
+router.get('/',authMiddleware.verifyToken, authMiddleware.isOwnerOrAdmin, ShowtimeController.getPaginatedShowtimes);
 
 module.exports = router;

@@ -50,6 +50,25 @@ class ShowtimeController {
       res.status(400).json({ error: error.message });
     }
   }
+
+  // Ανάκτηση προβολών βάσει ID ταινίας
+  async getPaginatedShowtimes(req, res) {
+    try {
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 10;
+      
+      const { count, rows } = await ShowtimeService.getPaginatedShowtimes(page, limit);
+  
+      res.json({
+        total: count,
+        page,
+        limit,
+        showtimes: rows
+      });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
 }
 
 module.exports = new ShowtimeController();

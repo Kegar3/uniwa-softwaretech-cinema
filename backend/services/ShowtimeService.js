@@ -84,6 +84,11 @@ class ShowtimeService {
     }
     return showtimes;
   }
+
+  // Ανάκτηση προβολών με παγιωμένη σειρά και δυνατότητα παγιωμένου limit και offset
+  async getPaginatedShowtimes(page, limit) {
+    return await ShowtimeRepository.getPaginatedShowtimes(page, limit);
+  }
 }
 
 module.exports = new ShowtimeService();

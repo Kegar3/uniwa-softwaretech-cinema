@@ -1,7 +1,5 @@
 const ReservationRepository = require('../repositories/ReservationRepository');
-const User = require('../models/User');
-const Movie = require('../models/Movie');
-const Showtime = require('../models/Showtime');
+const Showtime = require('../models/Showtime'); //κανονικα θα επρεπε να ειναι με καποιο service
 
 class ReservationService {
   // Δημιουργία νέας κράτησης με ελέγχους
@@ -78,20 +76,37 @@ class ReservationService {
   }
 
   // Διαγραφή κράτησης
-  async deleteReservation(reservationId, userId, isAdmin) {
+  async cancelReservation(reservationId, user) {
     const reservation = await ReservationRepository.getReservationById(reservationId);
     if (!reservation) {
       throw new Error('Reservation not found');
     }
 
-    // Αν η κράτηση υπάρχει, επιστρέφουμε τη θέση στο Showtime
     const showtime = await Showtime.findByPk(reservation.showtime_id);
-    if (showtime) {
-      await showtime.update({ available_seats: showtime.available_seats + 1 });
+    if (!showtime) {
+      throw new Error('Showtime not found.');
     }
+
+    if (new Date(showtime.start_time) <= new Date()) {
+      throw new Error('Cannot cancel a past or ongoing reservation.');
+    }
+
+    // Επιστροφή της θέσης στο Showtime
+    await showtime.update({ available_seats: showtime.available_seats + 1 });
 
     return await ReservationRepository.deleteReservation(reservationId);
   }
+
+  // Ανάκτηση κρατήσεων συγκεκριμένου χρήστη
+  async getReservationsByUser(userId, requestUser) {
+    const reservations = await ReservationRepository.getReservationsByUserId(userId);
+    if (!reservations.length) {
+      throw new Error('No reservations found for this user.');
+    }
+
+    return reservations;
+  }
+
 }
 
 module.exports = new ReservationService();

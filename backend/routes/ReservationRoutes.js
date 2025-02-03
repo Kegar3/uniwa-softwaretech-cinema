@@ -19,6 +19,9 @@ router.get('/:id', authMiddleware.verifyToken, authMiddleware.isOwnerOrAdmin, Re
 router.put('/:id', authMiddleware.verifyToken, authMiddleware.isOwnerOrAdmin, ReservationController.updateReservation);
 
 // Διαγραφή κράτησης (μόνο ο ιδιοκτήτης ή admin)
-router.delete('/:id', authMiddleware.verifyToken, authMiddleware.isOwnerOrAdmin, ReservationController.deleteReservation);
+router.delete('/:id', authMiddleware.verifyToken, authMiddleware.isOwnerOrAdmin, ReservationController.cancelReservation);
+
+// Ανάκτηση κρατήσεων συγκεκριμένου χρήστη
+router.get('/user/:id', authMiddleware.verifyToken, authMiddleware.isOwnerOrAdmin, ReservationController.getUserReservations);
 
 module.exports = router;

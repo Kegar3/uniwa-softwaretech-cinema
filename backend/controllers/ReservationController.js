@@ -1,5 +1,4 @@
 const ReservationService = require('../services/ReservationService');
-const Reservation = require('../models/Reservation'); //
 
 class ReservationController {
   // Δημιουργία νέας κράτησης
@@ -56,12 +55,21 @@ class ReservationController {
   }
 
   // Διαγραφή κράτησης (Μόνο ο κάτοχος ή Admins - middleware)
-  async deleteReservation(req, res) {
+  async cancelReservation(req, res) {
     try {
-      await ReservationService.deleteReservation(req.params.id);
-      res.json({ message: 'Reservation deleted successfully' });
+      await ReservationService.cancelReservation(parseInt(req.params.id), req.user);
+      res.json({ message: 'Reservation cancelled successfully.' });
     } catch (error) {
       res.status(400).json({ error: error.message });
+    }
+  }
+
+  async getUserReservations (req, res){
+    try {
+      const reservations = await ReservationService.getReservationsByUser(parseInt(req.params.id), req.user);
+      res.json(reservations);
+    } catch (error) {
+      res.status(403).json({ error: error.message });
     }
   }
 

@@ -11,24 +11,30 @@ class ReservationService {
       throw new Error('Missing required fields: showtime_id, seat, user_id');
     }
 
-    // 2. Έλεγχος αν υπάρχει η προβολή
+    // 2. Έλεγχος αν η θέση έχει έγκυρο τύπο δεδομένων
+    const seatRegex = /^[A-E][1-9]$|^[A-E]10$/;
+    if (!seatRegex.test(seat)) {
+      throw new Error('Invalid seat format. Expected format is "A1-E10".');
+    }
+
+    // 3. Έλεγχος αν υπάρχει η προβολή
     const showtime = await Showtime.findByPk(showtime_id);
     if (!showtime) {
       throw new Error('Showtime not found.');
     }
 
-    // 3. Έλεγχος αν η θέση είναι ήδη κρατημένη για αυτή την προβολή
+    // 4. Έλεγχος αν η θέση είναι ήδη κρατημένη για αυτή την προβολή
     const existingReservation = await ReservationRepository.getReservationByShowtimeAndSeat(showtime_id, seat);
     if (existingReservation) {
       throw new Error('This seat is already booked for this showtime.');
     }
 
-    // 4. Έλεγχος αν υπάρχουν διαθέσιμες θέσεις
+    // 5. Έλεγχος αν υπάρχουν διαθέσιμες θέσεις
     if (showtime.available_seats <= 0) {
       throw new Error('No available seats for this showtime.');
     }
 
-    // 5. Μείωση διαθέσιμων θέσεων
+    // 6. Μείωση διαθέσιμων θέσεων
     await showtime.update({ available_seats: showtime.available_seats - 1 });
 
     return await ReservationRepository.createReservation(reservationData);

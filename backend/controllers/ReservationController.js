@@ -64,6 +64,7 @@ class ReservationController {
     }
   }
 
+  // Ανάκτηση κρατήσεων συγκεκριμένου χρήστη (Μόνο ο ίδιος ο χρήστης ή Admins - middleware)
   async getUserReservations (req, res){
     try {
       const reservations = await ReservationService.getReservationsByUser(parseInt(req.params.id), req.user);
@@ -73,6 +74,28 @@ class ReservationController {
     }
   }
 
+  // Ανάκτηση παγιωμένων κρατήσεων με δυνατότητα φιλτραρίσματος
+  async getPaginatedReservations(req, res) {
+    try {
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 10;
+      const filters = {};
+  
+      if (req.query.user_id) filters.user_id = req.query.user_id;
+      if (req.query.showtime_id) filters.showtime_id = req.query.showtime_id;
+  
+      const { count, rows } = await ReservationService.getPaginatedReservations(page, limit, filters);
+  
+      res.json({
+        total: count,
+        page,
+        limit,
+        reservations: rows
+      });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
 }
 
 module.exports = new ReservationController();

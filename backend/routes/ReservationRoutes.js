@@ -7,7 +7,7 @@ const authMiddleware = require('../middlewares/authMiddleware');
 router.post('/', authMiddleware.verifyToken, ReservationController.createReservation);
 
 // Ανάκτηση όλων των κρατήσεων (μόνο για admins)
-router.get('/', authMiddleware.verifyToken, authMiddleware.isAdmin, ReservationController.getAllReservations);
+//router.get('/', authMiddleware.verifyToken, authMiddleware.isAdmin, ReservationController.getAllReservations);
 
 // Ανάκτηση κρατήσεων για συγκεκριμένο χρήστη (μόνο ο ίδιος ή ένας admin)
 router.get('/user/:userId', authMiddleware.verifyToken, authMiddleware.isOwnerOrAdmin, ReservationController.getReservationsByUserId);
@@ -23,5 +23,8 @@ router.delete('/:id', authMiddleware.verifyToken, authMiddleware.isOwnerOrAdmin,
 
 // Ανάκτηση κρατήσεων συγκεκριμένου χρήστη
 router.get('/user/:id', authMiddleware.verifyToken, authMiddleware.isOwnerOrAdmin, ReservationController.getUserReservations);
+
+// Ανάκτηση παγιωμένων κρατήσεων με δυνατότητα φιλτραρίσματος
+router.get('/', authMiddleware.verifyToken, authMiddleware.isOwnerOrAdmin,ReservationController.getPaginatedReservations);
 
 module.exports = router;

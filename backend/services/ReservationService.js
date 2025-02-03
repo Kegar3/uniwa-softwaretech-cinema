@@ -107,6 +107,11 @@ class ReservationService {
     return reservations;
   }
 
+  // Ανάκτηση παγιωμένων κρατήσεων με δυνατότητα φιλτραρίσματος
+  async getPaginatedReservations(page, limit, filters) {
+    return await ReservationRepository.getPaginatedReservations(page, limit, filters);
+  }
+  
 }
 
 module.exports = new ReservationService();

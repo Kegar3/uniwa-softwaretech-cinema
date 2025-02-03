@@ -43,6 +43,17 @@ class ReservationRepository {
     await reservation.destroy();
     return { message: 'Reservation deleted successfully' };
   }
+
+  // Ανάκτηση παγιωμένων κρατήσεων με δυνατότητα φιλτραρίσματος
+  async getPaginatedReservations(page = 1, limit = 10, filters = {}) {
+    const offset = (page - 1) * limit;
+    return await Reservation.findAndCountAll({
+      where: filters,
+      limit,
+      offset,
+      order: [['createdAt', 'DESC']], // Ταξινόμηση με βάση την ημερομηνία κράτησης
+    });
+  }
 }
 
 module.exports = new ReservationRepository();

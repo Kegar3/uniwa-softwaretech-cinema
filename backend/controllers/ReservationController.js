@@ -1,4 +1,5 @@
 const ReservationService = require('../services/ReservationService');
+const Reservation = require('../models/Reservation'); //
 
 class ReservationController {
   // Δημιουργία νέας κράτησης
@@ -63,6 +64,7 @@ class ReservationController {
       res.status(400).json({ error: error.message });
     }
   }
+
 }
 
 module.exports = new ReservationController();

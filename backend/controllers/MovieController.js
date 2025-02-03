@@ -1,4 +1,5 @@
 const MovieService = require('../services/MovieService');
+const ShowtimeService = require('../services/ShowtimeService');
 
 class MovieController {
   // Δημιουργία νέας ταινίας
@@ -50,6 +51,17 @@ class MovieController {
       res.status(404).json({ error: error.message });
     }
   }
+
+  // Ανάκτηση προβολών μιας ταινίας
+  async getMovieShowtimes(req, res) {
+    try {
+      const showtimes = await ShowtimeService.getShowtimesByMovie(req.params.id);
+      res.json(showtimes);
+    } catch (error) {
+      res.status(404).json({ error: error.message });
+    }
+  }
+
 }
 
 module.exports = new MovieController();

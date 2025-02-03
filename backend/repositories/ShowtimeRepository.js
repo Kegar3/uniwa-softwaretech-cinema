@@ -28,6 +28,10 @@ class ShowtimeRepository {
     await showtime.destroy();
     return { message: 'Showtime deleted successfully' };
   }
+
+  async getShowtimesByMovieId(movieId) {
+    return await Showtime.findAll({ where: { movie_id: movieId } });
+  }
 }
 
 module.exports = new ShowtimeRepository();

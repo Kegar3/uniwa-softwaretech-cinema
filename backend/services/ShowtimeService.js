@@ -75,6 +75,15 @@ class ShowtimeService {
 
     return await ShowtimeRepository.deleteShowtime(showtimeId);
   }
+
+  // Ανάκτηση προβολών βάσει ID ταινίας
+  async getShowtimesByMovie(movieId) {
+    const showtimes = await ShowtimeRepository.getShowtimesByMovieId(movieId);
+    if (!showtimes.length) {
+      throw new Error('No showtimes found for this movie.');
+    }
+    return showtimes;
+  }
 }
 
 module.exports = new ShowtimeService();

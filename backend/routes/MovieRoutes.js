@@ -19,4 +19,7 @@ router.put('/:id', authMiddleware.verifyToken, authMiddleware.isAdmin, MovieCont
 // Διαγραφή ταινίας (Μόνο Admins)
 router.delete('/:id', authMiddleware.verifyToken, authMiddleware.isAdmin, MovieController.deleteMovie);
 
+// Ανάκτηση προβολών μιας ταινίας (Ανοιχτό σε όλους)
+router.get('/:id/showtimes', MovieController.getMovieShowtimes);
+
 module.exports = router;

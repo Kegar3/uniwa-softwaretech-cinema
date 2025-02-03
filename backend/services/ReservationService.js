@@ -14,7 +14,7 @@ class ReservationService {
     // 2. Έλεγχος αν η θέση έχει έγκυρο τύπο δεδομένων
     const seatRegex = /^[A-E][1-9]$|^[A-E]10$/;
     if (!seatRegex.test(seat)) {
-      throw new Error('Invalid seat format. Expected format is "A1-E10".');
+      throw new Error('Invalid seat format. Expected format is A1-E10.');
     }
 
     // 3. Έλεγχος αν υπάρχει η προβολή

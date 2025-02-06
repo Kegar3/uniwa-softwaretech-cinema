@@ -22,7 +22,7 @@ sequelize
   })
   .catch((error) => console.error('Unable to sync database:', error));
 
-  app.use(cors()); // Επιτρέπει όλα τα origins
+app.use(cors()); // Επιτρέπει όλα τα origins γιατι δεν δεχοταν το frontend
   
 // Χρήση των routes
 app.use('/users', UserRoutes);

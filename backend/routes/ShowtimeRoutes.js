@@ -22,4 +22,7 @@ router.delete('/:id', authMiddleware.verifyToken, authMiddleware.isAdmin, Showti
 // Ανάκτηση προβολών βάσει ID ταινίας
 router.get('/',authMiddleware.verifyToken, authMiddleware.isOwnerOrAdmin, ShowtimeController.getPaginatedShowtimes);
 
+// Ανάκτηση διαθέσιμων θέσεων
+router.get('/:id/seats', ShowtimeController.getAvailableSeats);
+
 module.exports = router;

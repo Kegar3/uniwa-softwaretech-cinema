@@ -6,6 +6,7 @@ import Showtimes from "./pages/Showtimes";
 import Reservations from "./pages/Reservations";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Seats from "./pages/Seats";
 
 const AppRoutes = () => {
   return (
@@ -15,6 +16,8 @@ const AppRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/movies" element={<Movies />} />
         <Route path="/showtimes" element={<Showtimes />} />
+        <Route path="/movies/:id/showtimes" element={<Showtimes />} />
+        <Route path="/showtimes/:showtimeId/seats" element={<Seats />} />
         <Route path="/reservations" element={<Reservations />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

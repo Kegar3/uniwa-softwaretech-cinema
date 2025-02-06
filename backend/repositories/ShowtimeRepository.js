@@ -1,5 +1,6 @@
 const { Op } = require('sequelize'); 
 const Showtime = require('../models/Showtime');
+const Reservation = require('../models/Reservation');
 
 class ShowtimeRepository {
 
@@ -82,6 +83,35 @@ class ShowtimeRepository {
       showtimes: showtimes.rows,
     };
   }
+
+  // Επιστρέφει τις διαθέσιμες θέσεις για μια συγκεκριμένη προβολή
+  async getAvailableSeats(showtimeId) {
+    // Βρίσκουμε το Showtime
+    const showtime = await Showtime.findByPk(showtimeId);
+    if (!showtime) return null;
+
+    // Παίρνουμε τις κρατημένες θέσεις
+    const reservations = await Reservation.findAll({
+        where: { showtime_id: showtimeId },
+        attributes: ['seat']
+    });
+
+    // Δημιουργούμε έναν πίνακα με τις κρατημένες θέσεις
+    const reservedSeats = reservations.map(res => res.seat);
+
+    // Υποθέτουμε ότι κάθε αίθουσα έχει 50 θέσεις
+    const totalSeats = 50;
+    const availableSeats = [];
+
+    for (let i = 1; i <= totalSeats; i++) {
+        if (!reservedSeats.includes(`S${i}`)) {
+            availableSeats.push(`S${i}`);
+        }
+    }
+
+    return { showtime_id: showtimeId, availableSeats };
+  }
+  
 }
 
 module.exports = new ShowtimeRepository();

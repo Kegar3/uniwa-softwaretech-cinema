@@ -94,6 +94,11 @@ class ShowtimeService {
   async getAllShowtimes(query) {
     return await ShowtimeRepository.getAllShowtimes(query);
   }
+  
+  // Ανάκτηση διαθέσιμων θέσεων για συγκεκριμένη προβολή
+  async getAvailableSeats(showtimeId) {
+    return await ShowtimeRepository.getAvailableSeats(showtimeId);
+  }
 }
 
 module.exports = new ShowtimeService();

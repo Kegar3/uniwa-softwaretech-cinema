@@ -70,6 +70,23 @@ class ShowtimeController {
       res.status(500).json({ error: error.message });
     }
   }
+
+  // Ανάκτηση θέσεων για συγκεκριμένη προβολή
+  async getAvailableSeats(req, res) {
+    try {
+      const { id } = req.params;
+      const result = await ShowtimeService.getAvailableSeats(id);
+
+      if (!result) {
+          return res.status(404).json({ error: 'Showtime not found' });
+      }
+
+      res.json(result);
+    } catch (error) {
+        console.error('Error fetching available seats:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
 }
 
 module.exports = new ShowtimeController();

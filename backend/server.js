@@ -1,5 +1,6 @@
 const express = require('express'); // Φόρτωση του Express
 const sequelize = require('./config/config'); // Φόρτωση της σύνδεσης βάσης δεδομένων
+const cors = require('cors');
 
 const UserRoutes = require('./routes/UserRoutes'); // Εισαγωγή νέων routes για χρήστες
 const ReservationRoutes = require('./routes/ReservationRoutes'); // Εισαγωγή νέων routes για reservations
@@ -20,6 +21,8 @@ sequelize
     console.log('Database & tables synced!');
   })
   .catch((error) => console.error('Unable to sync database:', error));
+
+  app.use(cors()); // Επιτρέπει όλα τα origins
   
 // Χρήση των routes
 app.use('/users', UserRoutes);

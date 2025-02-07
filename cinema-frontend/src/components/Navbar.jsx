@@ -1,18 +1,38 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  return (
-    <nav style={styles.navbar}>
-      <h2 style={styles.logo}>Cinema Booking</h2>
-      <ul style={styles.navLinks}>
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        setIsLoggedIn(!!token); // Αν υπάρχει token, είναι logged in
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        setIsLoggedIn(false);
+        navigate("/login"); 
+    };
+
+    return (
+        <nav style={styles.navbar}>
+        <h2 style={styles.logo}>Cinema Booking</h2>
+        <ul style={styles.navLinks}>
         <li><Link to="/" style={styles.link}>Home</Link></li>
         <li><Link to="/movies" style={styles.link}>Movies</Link></li>
         <li><Link to="/showtimes" style={styles.link}>Showtimes</Link></li>
         <li><Link to="/reservations" style={styles.link}>Reservations</Link></li>
-        <li><Link to="/login" style={styles.link}>Login</Link></li>
-      </ul>
-    </nav>
-  );
+            {isLoggedIn ? (
+                <button onClick={handleLogout}>Logout</button>
+            ) : (
+              <li><Link to="/login" style={styles.link}>Login</Link></li>
+            )}
+        </ul>
+        </nav>
+    );
 };
 
 const styles = {

@@ -11,7 +11,6 @@ function Movies() {
       .catch((err) => console.error("Error fetching movies:", err));
   }, []);
 
-  console.log("Token:", localStorage.getItem("token"));
   return (
     <div>
       <h2>Available Movies</h2>

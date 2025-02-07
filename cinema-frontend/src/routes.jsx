@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Movies from "./pages/Movies";
@@ -9,17 +10,23 @@ import Register from "./pages/Register";
 import Seats from "./pages/Seats";
 
 const AppRoutes = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
+
   return (
     <Router>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/movies" element={<Movies />} />
-        <Route path="/showtimes" element={<Showtimes />} />
-        <Route path="/movies/:id/showtimes" element={<Showtimes />} />
-        <Route path="/showtimes/:showtimeId/seats" element={<Seats />} />
-        <Route path="/reservations" element={<Reservations />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/movies" element={isAuthenticated ? <Movies /> : <Login onLogin={handleLogin} />} />
+        <Route path="/showtimes" element={isAuthenticated ? <Showtimes /> : <Login onLogin={handleLogin} />} />
+        <Route path="/movies/:id/showtimes" element={isAuthenticated ? <Showtimes /> : <Login onLogin={handleLogin} />} />
+        <Route path="/showtimes/:showtimeId/seats" element={isAuthenticated ? <Seats /> : <Login onLogin={handleLogin} />} />
+        <Route path="/reservations" element={isAuthenticated ? <Reservations /> : <Login onLogin={handleLogin} />} />
+        <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/register" element={<Register />} />
       </Routes>
     </Router>

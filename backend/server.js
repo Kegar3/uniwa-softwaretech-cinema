@@ -7,7 +7,7 @@ const ReservationRoutes = require('./routes/ReservationRoutes'); // Εισαγω
 const MovieRoutes = require('./routes/MovieRoutes'); // Εισαγωγή νέων routes για ταινίες
 const ShowtimeRoutes = require('./routes/ShowtimeRoutes'); // Εισαγωγή νέων routes για προβολές
 const AdminRoutes = require('./routes/AdminRoutes'); // Εισαγωγή νέων routes για διαχειριστές
-const AuthController = require('./controllers/AuthController'); // Εισαγωγή του AuthController
+const AuthRoutes = require('./routes/AuthRoutes'); // Εισαγωγή νέων routes για authentication
 
 require('dotenv').config(); // Load environment variables from .env file
 
@@ -32,7 +32,7 @@ app.use('/showtimes', ShowtimeRoutes);
 app.use('/admin', AdminRoutes);
 
 // Authentication route
-app.post('/login', AuthController.login);
+app.post('/login', AuthRoutes);
 
 // Εκκίνηση του διακομιστή
 const PORT = process.env.PORT;

@@ -26,7 +26,7 @@ const Navbar = () => {
         <li><Link to="/showtimes" style={styles.link}>Showtimes</Link></li>
         <li><Link to="/reservations" style={styles.link}>Reservations</Link></li>
             {isLoggedIn ? (
-                <button onClick={handleLogout}>Logout</button>
+                <li><Link to="/" style={styles.link} onClick={handleLogout}>Logout</Link></li>
             ) : (
               <li><Link to="/login" style={styles.link}>Login</Link></li>
             )}

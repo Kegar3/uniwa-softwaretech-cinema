@@ -16,9 +16,15 @@ const AppRoutes = () => {
     setIsAuthenticated(true);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    setIsAuthenticated(false);
+  }
+
   return (
     <Router>
-      <Navbar />
+      <Navbar isAuthenticated={isAuthenticated} onLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/movies" element={isAuthenticated ? <Movies /> : <Login onLogin={handleLogin} />} />

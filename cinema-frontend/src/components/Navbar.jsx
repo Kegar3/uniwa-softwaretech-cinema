@@ -1,20 +1,13 @@
-import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import PropTypes from 'prop-types';
 
-const Navbar = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const navigate = useNavigate();
+const Navbar = ({ isAuthenticated, onLogout }) => {
+    const navigate = useNavigate();;
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        setIsLoggedIn(!!token); // Αν υπάρχει token, είναι logged in
-    }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("userId");
-        setIsLoggedIn(false);
-        navigate("/login"); 
+      onLogout();
+      navigate("/login");
     };
 
     return (
@@ -25,14 +18,19 @@ const Navbar = () => {
         <li><Link to="/movies" style={styles.link}>Movies</Link></li>
         <li><Link to="/showtimes" style={styles.link}>Showtimes</Link></li>
         <li><Link to="/reservations" style={styles.link}>Reservations</Link></li>
-            {isLoggedIn ? (
-                <li><Link to="/" style={styles.link} onClick={handleLogout}>Logout</Link></li>
-            ) : (
-              <li><Link to="/login" style={styles.link}>Login</Link></li>
-            )}
+        {isAuthenticated ? (
+          <li><Link to="/login" style={styles.link} onClick={handleLogout}>Logout</Link></li>
+        ) : (
+          <li><Link to="/login" style={styles.link}>Login</Link></li>
+        )}
         </ul>
         </nav>
     );
+};
+
+Navbar.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  onLogout: PropTypes.func.isRequired,
 };
 
 const styles = {

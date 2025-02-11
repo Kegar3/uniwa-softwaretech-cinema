@@ -87,6 +87,24 @@ class ShowtimeController {
         res.status(500).json({ error: 'Internal Server Error' });
     }
   }
+
+  // Ανάκτηση κρατήσεων για συγκεκριμένη προβολή
+  async getReservationsForShowtime(req, res) {
+    try {
+      const { id } = req.params;
+      const reservations = await ShowtimeService.getReservationsForShowtime(id);
+
+      if (!reservations) {
+          return res.status(404).json({ error: 'No reservations found for this showtime' });
+      }
+
+      res.json(reservations);
+    } catch (error) {
+        console.error('Error fetching reservations for showtime:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
 }
 
 module.exports = new ShowtimeController();

@@ -25,4 +25,7 @@ router.get('/',authMiddleware.verifyToken, authMiddleware.isOwnerOrAdmin, Showti
 // Ανάκτηση διαθέσιμων θέσεων
 router.get('/:id/seats', ShowtimeController.getAvailableSeats);
 
+// Aνάκτηση κρατησεων μιας προβολης
+router.get('/:id/reservations', ShowtimeController.getReservationsForShowtime);
+
 module.exports = router;

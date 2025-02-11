@@ -112,6 +112,15 @@ class ShowtimeRepository {
     return { showtime_id: showtimeId, availableSeats };
   }
   
+
+  // Επιστρέφει τις κρατήσεις για μια συγκεκριμένη προβολή
+  async getReservationsForShowtime(showtimeId) {
+    return await Reservation.findAll({
+      where: { showtime_id: showtimeId },
+      attributes: ['seat', 'user_id']
+    });
+  }
+
 }
 
 module.exports = new ShowtimeRepository();

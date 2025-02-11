@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types"
 
-const Profile = () => {
+const Profile = ({onLogout}) => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
 
@@ -42,10 +43,9 @@ const Profile = () => {
                     <p><strong>Username:</strong> {user.username}</p>
                     <p><strong>Email:</strong> {user.email}</p>
                     <p><strong>Role:</strong> {user.role || "User"}</p>
+                    <p><strong>Created At:</strong> {new Date(user.createdAt).toLocaleString()}</p>
                     <button onClick={() => {
-                        localStorage.removeItem("token");
-                        localStorage.removeItem("userId");
-                        localStorage.removeItem("user");
+                        onLogout();
                         window.location.href = "/login"; 
                     }}>
                         Logout
@@ -56,6 +56,10 @@ const Profile = () => {
             )}
         </div>
     );
+};
+
+Profile.propTypes = {
+    onLogout: PropTypes.func.isRequired,
 };
 
 export default Profile;

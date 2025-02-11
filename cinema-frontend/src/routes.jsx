@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Movies from "./pages/Movies";
@@ -8,9 +8,29 @@ import Reservations from "./pages/Reservations";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Seats from "./pages/Seats";
+import Profile from "./pages/Profile";
 
 const AppRoutes = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const checkToken = () => {
+        const token = localStorage.getItem("token");
+        console.log("Checking token on re-render:", token);
+        setIsAuthenticated(!!token);
+    };
+
+    // Ελέγχουμε το token αρχικά
+    checkToken();
+
+    // Προσθέτουμε event listener για να ενημερώνεται το state όταν αλλάζει το localStorage
+    window.addEventListener("storage", checkToken);
+
+    return () => {
+        window.removeEventListener("storage", checkToken);
+    };
+  }, []);
+
 
   const handleLogin = (token, user) => {
     localStorage.setItem("token", token);
@@ -36,6 +56,7 @@ const AppRoutes = () => {
         <Route path="/reservations" element={isAuthenticated ? <Reservations /> : <Login onLogin={handleLogin} />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/register" element={<Register onRegister={handleLogin}/>} />
+        <Route path="/profile" element={isAuthenticated ? <Profile /> : <Login onLogin={handleLogin} />} />
       </Routes>
     </Router>
   );

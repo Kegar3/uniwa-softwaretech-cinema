@@ -1,9 +1,17 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 
 const Navbar = ({ isAuthenticated, onLogout }) => {
-    const navigate = useNavigate();;
+  const [user, setUser] = useState(null);
+    const navigate = useNavigate();
 
+    useEffect(() => {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+          setUser(JSON.parse(storedUser));
+      }
+    }, [isAuthenticated]); // Παρακολουθεί το authentication state
 
     const handleLogout = () => {
       onLogout();
@@ -18,7 +26,10 @@ const Navbar = ({ isAuthenticated, onLogout }) => {
         <li><Link to="/movies" style={styles.link}>Movies</Link></li>
         <li><Link to="/reservations" style={styles.link}>Reservations</Link></li>
         {isAuthenticated ? (
-          <li><Link to="/login" style={styles.link} onClick={handleLogout}>Logout</Link></li>
+          <>
+            <li><Link to="/profile" style={styles.link}>{user?.username || "Profile"}</Link></li>
+            <li><Link to="/login" style={styles.link} onClick={handleLogout}>Logout</Link></li>
+          </>
         ) : (
           <>
             <li><Link to="/login" style={styles.link}>Login</Link></li>

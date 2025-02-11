@@ -30,9 +30,14 @@ const Register = ({onRegister}) => {
                 throw new Error(data.error || "Registration failed");
             }
 
+
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("userId", data.user.id); // Αποθήκευση User ID
+            localStorage.setItem("user", data.username); // Αποθήκευση username
+            
             // Save the token and redirect to Movies
-            onRegister(data.token, data.user);
-            navigate("/movies");
+            if (onRegister) onRegister(data.token, data.user); // Περνάμε και το user object
+            navigate("/profile");
 
         } catch (err) {
             setError(err.message);

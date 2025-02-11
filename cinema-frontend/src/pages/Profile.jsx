@@ -44,6 +44,7 @@ const Profile = () => {
                     <p><strong>Role:</strong> {user.role || "User"}</p>
                     <button onClick={() => {
                         localStorage.removeItem("token");
+                        localStorage.removeItem("userId");
                         localStorage.removeItem("user");
                         window.location.href = "/login"; 
                     }}>

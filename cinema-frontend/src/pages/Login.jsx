@@ -26,11 +26,11 @@ const Login = ({ onLogin = () => {} }) => {
   
           localStorage.setItem("token", data.token);
           localStorage.setItem("userId", data.user.id); // Αποθήκευση User ID
-          localStorage.setItem("user", JSON.stringify(data.user)); // Αποθήκευση username
+          localStorage.setItem("user", data.username); // Αποθήκευση username
 
           if (onLogin) onLogin(data.token, data.user); // Περνάμε και το user object
   
-          navigate("/profile"); // Πάμε στις ταινίες μετά το login
+          navigate("/profile"); // Πάμε στο profile
       } catch (err) {
           setError(err.message);
       }

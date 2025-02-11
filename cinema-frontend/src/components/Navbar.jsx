@@ -18,7 +18,7 @@ const Navbar = ({ isAuthenticated, onLogout }) => {
 
     return (
         <nav style={styles.navbar}>
-        <h2 style={styles.logo}>Cinema Booking</h2>
+        <h2 style={styles.logo}>Uniwa Cinema Booking</h2>
         <ul style={styles.navLinks}>
         <li><Link to="/" style={styles.link}>Home</Link></li>
         <li><Link to="/movies" style={styles.link}>Movies</Link></li>

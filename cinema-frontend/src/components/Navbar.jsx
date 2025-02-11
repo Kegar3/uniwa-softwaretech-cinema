@@ -16,12 +16,14 @@ const Navbar = ({ isAuthenticated, onLogout }) => {
         <ul style={styles.navLinks}>
         <li><Link to="/" style={styles.link}>Home</Link></li>
         <li><Link to="/movies" style={styles.link}>Movies</Link></li>
-        <li><Link to="/showtimes" style={styles.link}>Showtimes</Link></li>
         <li><Link to="/reservations" style={styles.link}>Reservations</Link></li>
         {isAuthenticated ? (
           <li><Link to="/login" style={styles.link} onClick={handleLogout}>Logout</Link></li>
         ) : (
-          <li><Link to="/login" style={styles.link}>Login</Link></li>
+          <>
+            <li><Link to="/login" style={styles.link}>Login</Link></li>
+            <li><Link to="/register" style={styles.link}>Register</Link></li>
+          </>
         )}
         </ul>
         </nav>

@@ -27,9 +27,9 @@ const AppRoutes = () => {
       <Navbar isAuthenticated={isAuthenticated} onLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/movies" element={isAuthenticated ? <Movies /> : <Login onLogin={handleLogin} />} />
-        <Route path="/showtimes" element={isAuthenticated ? <Showtimes /> : <Login onLogin={handleLogin} />} />
-        <Route path="/movies/:id/showtimes" element={isAuthenticated ? <Showtimes /> : <Login onLogin={handleLogin} />} />
+        <Route path="/movies" element={ <Movies />} />
+        <Route path="/showtimes" element={<Showtimes />} />
+        <Route path="/movies/:id/showtimes" element={<Showtimes /> } />
         <Route path="/showtimes/:showtimeId/seats" element={isAuthenticated ? <Seats /> : <Login onLogin={handleLogin} />} />
         <Route path="/reservations" element={isAuthenticated ? <Reservations /> : <Login onLogin={handleLogin} />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />

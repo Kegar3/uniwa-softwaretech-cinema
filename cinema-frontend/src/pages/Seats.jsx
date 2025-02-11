@@ -101,7 +101,7 @@ const Seats = () => {
                             disabled={isReserved}
                             style={{
                                 ...styles.seat,
-                                backgroundColor: isReserved ? "red" : (selectedSeat === seat ? "green" : "lightgray"),
+                                backgroundColor: isReserved ? "darkgray" : (selectedSeat === seat ? "green" : "lightgray"),
                                 cursor: isReserved ? "not-allowed" : "pointer"
                             }}
                         >

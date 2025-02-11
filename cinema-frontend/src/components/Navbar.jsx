@@ -22,9 +22,9 @@ const Navbar = ({ isAuthenticated, onLogout }) => {
         <ul style={styles.navLinks}>
         <li><Link to="/" style={styles.link}>Home</Link></li>
         <li><Link to="/movies" style={styles.link}>Movies</Link></li>
-        <li><Link to="/reservations" style={styles.link}>Reservations</Link></li>
         {isAuthenticated ? (
           <>
+            <li><Link to="/reservations" style={styles.link}>Reservations</Link></li>
             <li><Link to="/profile" style={styles.link}>{user || "Profile"}</Link></li>
             <li><Link to="/login" style={styles.link} onClick={handleLogout}>Logout</Link></li>
           </>

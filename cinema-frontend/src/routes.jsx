@@ -51,7 +51,7 @@ const AppRoutes = () => {
         <Route path="/movies" element={ <Movies />} />
         <Route path="/showtimes" element={<Showtimes />} />
         <Route path="/movies/:id/showtimes" element={<Showtimes /> } />
-        <Route path="/showtimes/:showtimeId/seats" element={isAuthenticated ? <Seats /> : <Login onLogin={handleLogin} />} />
+        <Route path="/showtimes/:showtimeId/seats" element={ <Seats />} />
         <Route path="/reservations" element={isAuthenticated ? <Reservations /> : <Login onLogin={handleLogin} />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/register" element={<Register onRegister={handleLogin}/>} />

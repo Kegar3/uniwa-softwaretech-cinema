@@ -19,3 +19,11 @@ exports.login = async (username, password) => {
 
     return { token, user };
 };
+
+exports.register = async (username, email, password) => {
+    const user = await User.create({ username, email, password: await bcrypt.hash(password, 8) });
+
+    const token = jwt.sign({id: user.id, role: user.role}, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    return { token, user };
+};

@@ -12,7 +12,9 @@ import Seats from "./pages/Seats";
 const AppRoutes = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
 
-  const handleLogin = () => {
+  const handleLogin = (token, user) => {
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
     setIsAuthenticated(true);
   };
 
@@ -33,7 +35,7 @@ const AppRoutes = () => {
         <Route path="/showtimes/:showtimeId/seats" element={isAuthenticated ? <Seats /> : <Login onLogin={handleLogin} />} />
         <Route path="/reservations" element={isAuthenticated ? <Reservations /> : <Login onLogin={handleLogin} />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/register" element={<Register onRegister={handleLogin}/>} />
       </Routes>
     </Router>
   );

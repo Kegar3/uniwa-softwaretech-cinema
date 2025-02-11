@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const Register = () => {
+const Register = ({onRegister}) => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -30,8 +31,7 @@ const Register = () => {
             }
 
             // Save the token and redirect to Movies
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("userId", data.userId); // Αποθήκευση User ID
+            onRegister(data.token, data.user);
             navigate("/movies");
 
         } catch (err) {
@@ -69,6 +69,10 @@ const Register = () => {
             </form>
         </div>
     );
+};
+
+Register.propTypes = {
+    onRegister: PropTypes.func.isRequired,
 };
 
 export default Register;

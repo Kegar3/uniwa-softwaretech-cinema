@@ -1,11 +1,14 @@
 // controllers/UserController.js
 const userService = require('../services/UserService'); // Εισαγωγή του UserService για χρήση της επιχειρησιακής λογικής
+const authService = require('../services/AuthService'); // Εισαγωγή του AuthService για χρήση της επιχειρησιακής λογικής
 
 // Δημιουργία νέου χρήστη
 exports.createUser = async (req, res) => {
   try {
-    const user = await userService.createUser(req.body); // Κλήση του service για δημιουργία χρήστη
-    res.status(201).json(user); // Επιστροφή του δημιουργημένου χρήστη
+    const { username, email, password } = req.body; // Ανάκτηση δεδομένων από το request body
+    const {token, user} = await authService.register(username, email, password); // Κλήση του service για δημιουργία χρήστη
+    
+    res.status(201).json({token, user}); // Επιστροφή του δημιουργημένου χρήστη
   } catch (error) {
     res.status(500).json({ error: error.message }); // Χειρισμός σφάλματος
   }

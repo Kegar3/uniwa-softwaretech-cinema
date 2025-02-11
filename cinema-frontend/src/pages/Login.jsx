@@ -26,9 +26,9 @@ const Login = ({ onLogin = () => {} }) => {
   
           localStorage.setItem("token", data.token);
           localStorage.setItem("userId", data.user.id); // Αποθήκευση User ID
-          localStorage.setItem("user", data.username); // Αποθήκευση username
+          localStorage.setItem("username", data.user.username); // Αποθήκευση username
 
-          if (onLogin) onLogin(data.token, data.user); // Περνάμε και το user object
+          if (onLogin) onLogin(data.token, data.username); // Περνάμε και το user object
   
           navigate("/profile"); // Πάμε στο profile
       } catch (err) {

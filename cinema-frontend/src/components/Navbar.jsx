@@ -50,10 +50,10 @@ const styles = {
     justifyContent: "space-between",
     border: "1px solid black",
     alignItems: "center",
-    padding: "15px 30px",
+    padding: "5px 30px",
     backgroundColor: "black",
     color: "#fff",
-    borderRadius: "5px",
+    borderRadius: "10px",
   },
   logo: { fontSize: "2rem" },
   navLinks: {

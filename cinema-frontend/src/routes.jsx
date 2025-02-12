@@ -16,12 +16,32 @@ const AppRoutes = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const checkAuthStatus = () => {
+    const checkAuthStatus = async () => {
       const token = localStorage.getItem("token");
-      const role = localStorage.getItem("role");
 
-      setIsAuthenticated(!!token);
-      setIsAdmin(role === "admin"); 
+      if (!token) {
+        setIsAuthenticated(false);
+        setIsAdmin(false);
+        return;
+      }
+      try{
+        const response = await fetch("http://localhost:3000/users/me", {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        if(!response.ok){
+          throw new Error("Failed to fetch user data");
+        }
+
+        const data = await response.json();
+        setIsAuthenticated(true);
+        setIsAdmin(data.role === "admin");
+      } catch (error) {
+        console.error(error);
+        setIsAuthenticated(false);
+        setIsAdmin(false);
+      }
+
     };
 
     checkAuthStatus();
@@ -33,14 +53,40 @@ const AppRoutes = () => {
   }, []);
 
 
-  const handleLogin = (token, role) => {
-    localStorage.setItem("token", token);
-    localStorage.setItem("role", role); 
-
+  const handleLogin = (token) => {
+    localStorage.setItem("token", token); 
     setIsAuthenticated(true);
-    setIsAdmin(localStorage.getItem("role") === "admin"); 
+    fetchUserData();
   };
 
+  const fetchUserData = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      setIsAuthenticated(false);
+      setIsAdmin(false);
+      return;
+    }
+
+    try { 
+      const response = await fetch("http://localhost:3000/users/me", {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+
+      const data = await response.json();
+      setIsAuthenticated(true);
+      setIsAdmin(data.role === "admin");
+    } catch (error) {
+      console.error("Error fetching user data: ",error);
+      setIsAuthenticated(false);
+      setIsAdmin(false);
+    }  
+  };
+  
   const handleLogout = () => {
     localStorage.clear();
     setIsAuthenticated(false);

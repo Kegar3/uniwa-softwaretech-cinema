@@ -12,6 +12,9 @@ const authMiddleware = require('../middlewares/authMiddleware');
 // Ανάκτηση όλων των χρηστών (Μόνο Admins)
 router.get('/', authMiddleware.verifyToken, authMiddleware.isAdmin, UserController.getAllUsers);
 
+// Ανάκτηση στοιχείων του τρέχοντος χρήστη
+router.get('/me', authMiddleware.verifyToken, UserController.getUserDetails);
+
 // Ανάκτηση συγκεκριμένου χρήστη βάσει ID (Μόνο authenticated χρήστες)
 router.get('/:id', authMiddleware.verifyToken, UserController.getUserById);
 
@@ -20,5 +23,6 @@ router.put('/:id', authMiddleware.verifyToken, UserController.updateUser);
 
 // Διαγραφή χρήστη (Μόνο Admins)
 router.delete('/:id', authMiddleware.verifyToken, authMiddleware.isAdmin, UserController.deleteUser);
+
 
 module.exports = router;

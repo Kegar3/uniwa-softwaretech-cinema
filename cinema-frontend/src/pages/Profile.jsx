@@ -6,17 +6,16 @@ const Profile = ({onLogout}) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const userId = localStorage.getItem("userId");
         const token = localStorage.getItem("token");
 
-        if (!userId || !token) {
+        if (!token) {
             setError("User not logged in.");
             return;
         }
 
         const fetchUser = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/users/${userId}`, {
+                const response = await fetch(`http://localhost:3000/users/me`, {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
 

@@ -6,38 +6,60 @@ const Reservations = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const userId = localStorage.getItem("userId");
         const token = localStorage.getItem("token");
 
-        if (!userId || !token) {
+        if (!token) {
           setError("User not authenticated.");
           setLoading(false);
           return;
         }
         
-        const fetchReservations = async () => {
+        const fetchUserDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/reservations/user/${userId}`, {
+                const userResponse = await fetch("http://localhost:3000/users/me", {
                     headers: {
                         "Authorization": `Bearer ${token}`
                     }
                 });
 
-                if (!response.ok) {
-                    throw new Error("Failed to fetch reservations");
+                if (!userResponse.ok) {
+                    throw new Error("Failed to fetch user details");
                 }
 
-                const data = await response.json();
-                setReservations(data);
+                const userData = await userResponse.json();
+                const userId = userData.id;
+
+                const fetchReservations = async () => {
+                    try {
+                        const response = await fetch(`http://localhost:3000/reservations/user/${userId}`, {
+                            headers: {
+                                "Authorization": `Bearer ${token}`
+                            }
+                        });
+
+                        if (!response.ok) {
+                            throw new Error("Failed to fetch reservations");
+                        }
+
+                        const data = await response.json();
+                        setReservations(data);
+                    } catch (err) {
+                        console.error("Error fetching reservations:", err);
+                        setError("Failed to load reservations.");
+                    } finally {
+                        setLoading(false);
+                    }
+                };
+
+                fetchReservations();
             } catch (err) {
-                console.error("Error fetching reservations:", err);
-                setError("Failed to load reservations.");
-            } finally {
+                console.error("Error fetching user details:", err);
+                setError("Failed to load user details.");
                 setLoading(false);
             }
         };
 
-        fetchReservations();
+        fetchUserDetails();
     }, []);
 
     const handleCancelReservation = async (reservationId) => {

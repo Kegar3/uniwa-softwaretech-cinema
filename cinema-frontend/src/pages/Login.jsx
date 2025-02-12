@@ -25,11 +25,20 @@ const Login = ({ onLogin = () => {} }) => {
           }
   
           localStorage.setItem("token", data.token);
-          localStorage.setItem("userId", data.user.id); // Αποθήκευση User ID
-          localStorage.setItem("username", data.user.username); // Αποθήκευση username
-          localStorage.setItem("role", data.user.role); // Αποθήκευση ρόλου
+          localStorage.setItem("username", data.user.username);
 
-          if (onLogin) onLogin(data.token, data.user.username, data.user.role); // Περνάμε και το user object
+          // Fetch user data to determine role
+          const userResponse = await fetch("http://localhost:3000/users/me", {
+              headers: { "Authorization": `Bearer ${data.token}` }
+          });
+
+          const userData = await userResponse.json();
+
+          if (!userResponse.ok) {
+            throw new Error(userData.error || "Failed to fetch user data");
+          }
+
+          if (onLogin) onLogin(data.token); // Περνάμε και το user object
   
           navigate("/profile"); // Πάμε στο profile
       } catch (err) {

@@ -35,3 +35,10 @@ exports.deleteUser = async (user) => {
 exports.findByUsername = async (username) => {
   return await User.findOne({ where: { username } });
 };
+
+// Ανάκτηση χρήστη βάσει ID
+exports.findById = async (userId) => {
+  return await User.findByPk(userId, {
+    attributes: ['id', 'username', 'email', 'role', 'createdAt']
+  }); // Επιστρέφει το χρήστη με το συγκεκριμένο ID
+};

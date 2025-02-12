@@ -53,14 +53,28 @@ const Seats = () => {
             return;
         }
 
-        const userId = localStorage.getItem("userId");
+        const token = localStorage.getItem("token");
 
-        if (!userId) {
+        if (!token) {
             alert("User not authenticated. Please log in again.");
             return;
         }
 
         try {
+             // Fetch user details to get the user ID
+             const userResponse = await fetch("http://localhost:3000/users/me", {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            if (!userResponse.ok) {
+                throw new Error("Failed to fetch user details");
+            }
+
+            const userData = await userResponse.json();
+            const userId = userData.id;
+            
             const response = await fetch("http://localhost:3000/reservations", {
                 method: "POST",
                 headers: {

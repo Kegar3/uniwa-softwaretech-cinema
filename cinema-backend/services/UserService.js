@@ -13,7 +13,11 @@ exports.getAllUsers = async () => {
 
 // Ανάκτηση χρήστη βάσει ID
 exports.getUserById = async (userId) => {
-  return userRepository.getUserById(userId); // Κλήση του UserRepository για την ανάκτηση χρήστη με συγκεκριμένο ID
+  const user = await userRepository.getUserById(userId); // Κλήση του UserRepository για την ανάκτηση χρήστη με συγκεκριμένο ID
+  if (!user) {
+    throw new Error('User not found');
+  }
+  return user;
 };
 
 // Ενημέρωση χρήστη βάσει ID
@@ -33,4 +37,13 @@ exports.deleteUser = async (userId) => {
     return true; // Επιτυχής διαγραφή
   }
   return false; // Επιστρέφει false αν ο χρήστης δεν βρεθεί
+};
+
+// Ανάκτηση χρήστη βάσει ID
+exports.getUserDetails = async (userId) => {
+  const user = await userRepository.findById(userId); // Κλήση του UserRepository για την ανάκτηση χρήστη με συγκεκριμένο ID
+  if (!user) {
+    throw new Error('User not found');
+  }
+  return user;
 };

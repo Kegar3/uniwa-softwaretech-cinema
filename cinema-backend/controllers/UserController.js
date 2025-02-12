@@ -65,3 +65,13 @@ exports.deleteUser = async (req, res) => {
     res.status(500).json({ error: error.message }); // Χειρισμός σφάλματος
   }
 };
+
+// Ανάκτηση των στοιχείων του authenticated χρήστη
+exports.getUserDetails = async (req, res) => {
+  try {
+    const user = await userService.getUserDetails(req.user.id);
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

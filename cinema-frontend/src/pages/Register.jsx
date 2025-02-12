@@ -32,11 +32,10 @@ const Register = ({onRegister}) => {
 
 
             localStorage.setItem("token", data.token);
-            localStorage.setItem("userId", data.user.id); // Αποθήκευση User ID
             localStorage.setItem("username", data.user.username); // Αποθήκευση username
             
             // Save the token and redirect to Movies
-            if (onRegister) onRegister(data.token, data.user); // Περνάμε και το user object
+            if (onRegister) onRegister(data.token); // Περνάμε και το user object
             navigate("/profile");
 
         } catch (err) {

@@ -48,21 +48,23 @@ const styles = {
   navbar: {
     display: "flex",
     justifyContent: "space-between",
+    border: "1px solid black",
     alignItems: "center",
     padding: "15px 30px",
-    backgroundColor: "#222",
-    color: "#fff"
+    backgroundColor: "black",
+    color: "#fff",
+    borderRadius: "5px",
   },
-  logo: { fontSize: "1.5rem" },
+  logo: { fontSize: "2rem" },
   navLinks: {
     display: "flex",
     listStyle: "none",
-    gap: "15px",
+    gap: "30px",
   },
   link: {
     textDecoration: "none",
     color: "white",
-    fontSize: "1.2rem"
+    fontSize: "1.5rem"
   }
 };
 

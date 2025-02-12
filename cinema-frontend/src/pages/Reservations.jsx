@@ -40,6 +40,35 @@ const Reservations = () => {
         fetchReservations();
     }, []);
 
+    const handleCancelReservation = async (reservationId) => {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            alert("User not authenticated.");
+            return;
+        }
+
+        if (!window.confirm("Are you sure you want to cancel this reservation?")) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:3000/reservations/${reservationId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) throw new Error("Failed to cancel reservation");
+
+            setReservations(reservations.filter(res => res.id !== reservationId)); // Αφαιρεί τη κράτηση από το UI
+        } catch (err) {
+            console.error("Error canceling reservation:", err);
+            alert("Failed to cancel reservation.");
+        }
+    };
+
     if (loading) return <p>Loading reservations...</p>;
     if (error) return <p style={{ color: "red" }}>{error}</p>;
 
@@ -51,10 +80,13 @@ const Reservations = () => {
                     <p>No reservations found.</p>
                 ) : (
                     reservations.map((res) => (
-                        <li key={res.id} style={styles.reservationItem}>
-                            <strong>Movie:</strong> {res.movie || "Unknown"} <br />
-                            <strong>Showtime:</strong> {res.showtime ? new Date(res.showtime).toLocaleString() : "Unknown"} <br />
-                            <strong>Seat:</strong> {res.seat}
+                        <li key={res.id} style={styles.reservationItem}>  
+                            <div style={styles.reservationDetails}>
+                                <strong>Movie:</strong> {res.movie || "Unknown"} <br />
+                                <strong>Showtime:</strong> {res.showtime ? new Date(res.showtime).toLocaleString() : "Unknown"} <br />
+                                <strong>Seat:</strong> {res.seat}
+                            </div>
+                            <button onClick={() => handleCancelReservation(res.id)} style={styles.cancelButton}>Cancel Reservation</button>
                         </li>
                     ))
                 )}
@@ -69,10 +101,24 @@ const styles = {
         padding: 0,
     },
     reservationItem: {
-        border: "1px solid #ccc",
+        display: "flex",
+        border: "1px solid ",
+        justifyContent: "space-between",
+        alignItems: "center",
         padding: "10px",
         marginBottom: "10px",
         backgroundColor: "#f9f9f9",
+        borderRadius: "5px",
+    },
+    reservationDetails: {
+        marginRight: "10px",
+    },
+    cancelButton: {
+        backgroundColor: "black",
+        color: "white",
+        border: "none",
+        padding: "8px 12px",
+        cursor: "pointer",
         borderRadius: "5px",
     }
 };

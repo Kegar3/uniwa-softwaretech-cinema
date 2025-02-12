@@ -9,15 +9,20 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Seats from "./pages/Seats";
 import Profile from "./pages/Profile";
+import AdminPanel from "./pages/AdminPanel";
+import ProtectedRoute from "./components/ProtectedRoutes";
 
 const AppRoutes = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
     const checkToken = () => {
         const token = localStorage.getItem("token");
+        const user = JSON.parse(localStorage.getItem("role"));
         console.log("Checking token on re-render:", token);
         setIsAuthenticated(!!token);
+        setUserRole(user ? user.role : null);
     };
 
     // Ελέγχουμε το token αρχικά
@@ -36,11 +41,13 @@ const AppRoutes = () => {
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(user));
     setIsAuthenticated(true);
+    setUserRole(user ? user.role : null);
   };
 
   const handleLogout = () => {
     localStorage.clear();
     setIsAuthenticated(false);
+    setUserRole(null);
   }
 
   return (
@@ -56,6 +63,11 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/register" element={<Register onRegister={handleLogin}/>} />
         <Route path="/profile" element={isAuthenticated ? <Profile onLogout={handleLogout}/> : <Login onLogin={handleLogin} />} />
+        <Route path="/admin" element={
+          <ProtectedRoute isAuthenticated={isAuthenticated} userRole={userRole}>
+            <AdminPanel />
+          </ProtectedRoute>
+        } />
       </Routes>
     </Router>
   );

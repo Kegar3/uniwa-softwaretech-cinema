@@ -1,27 +1,24 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { useEffect } from "react";
 import PropTypes from 'prop-types';
-import Movies from "../pages/Movies";
-import Showtimes from "../pages/Showtimes";
-import Reservations from "../pages/Reservations";
-import Seats from "../pages/Seats";
 
-const ProtectedRoutes = ({ isAuthenticated }) => {
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
+const ProtectedRoute = ({ isAuthenticated, userRole, children }) => {
+  useEffect(() => {
+    if (!isAuthenticated || userRole !== 'admin') {
+      alert("Access Denied!");
+    }
+  }, [isAuthenticated, userRole]);
+
+  if (!isAuthenticated || userRole !== 'admin') {
+    return <Navigate to="/" />;
   }
 
-  return (
-    <Routes>
-      <Route path="/movies" element={<Movies />} />
-      <Route path="/showtimes" element={<Showtimes />} />
-      <Route path="/movies/:id/showtimes" element={<Showtimes />} />
-      <Route path="/showtimes/:showtimeId/seats" element={<Seats />} />
-      <Route path="/reservations" element={<Reservations />} />
-    </Routes>
-  );
+  return children;
 };
-ProtectedRoutes.propTypes = {
+ProtectedRoute.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
+  userRole: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
-export default ProtectedRoutes;
+export default ProtectedRoute;

@@ -121,7 +121,8 @@ class ReservationService {
 
   // Ανάκτηση παγιωμένων κρατήσεων με δυνατότητα φιλτραρίσματος
   async getPaginatedReservations(page, limit, filters) {
-    return await ReservationRepository.getPaginatedReservations(page, limit, filters);
+    const reservations= await ReservationRepository.getPaginatedReservations(page, limit, filters);
+    return reservations;
   }
   
 }

@@ -69,6 +69,19 @@ class ReservationRepository {
       limit,
       offset,
       order: [['createdAt', 'DESC']], // Ταξινόμηση με βάση την ημερομηνία κράτησης
+      include: [
+        {
+            model: Showtime,
+            attributes: ['start_time'],
+            include: [
+                {
+                    model: Movie,
+                    attributes: ['title']
+                }
+            ]
+        }
+      ],
+    attributes: ['id', 'seat']
     });
   }
 }

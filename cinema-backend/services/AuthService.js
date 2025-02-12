@@ -9,7 +9,7 @@ exports.login = async (username, password) => {
     if (!user) {
         throw new Error('User not found');
     }
-
+    
     const isMatch = await bcrypt.compare(password, user.password);
     if(!isMatch) {
         throw new Error('Invalid credentials');
@@ -21,9 +21,8 @@ exports.login = async (username, password) => {
 };
 
 exports.register = async (username, email, password) => {
-    const user = await User.create({ username, email, password: await bcrypt.hash(password, 8) });
+    const user = await User.create({ username, email, password});
 
-    const token = jwt.sign({id: user.id, role: user.role}, process.env.JWT_SECRET, { expiresIn: '1h' });
-
+    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
     return { token, user };
 };

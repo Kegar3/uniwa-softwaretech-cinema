@@ -1,4 +1,6 @@
 const Reservation = require('../models/Reservation');
+const Showtime = require('../models/Showtime');
+const Movie = require('../models/Movie');
 
 class ReservationRepository {
   // Δημιουργία νέας κράτησης
@@ -18,8 +20,23 @@ class ReservationRepository {
 
   // Ανάκτηση κρατήσεων συγκεκριμένου χρήστη
   async getReservationsByUserId(userId) {
-    return await Reservation.findAll({ where: { user_id: userId } });
-  }
+    return await Reservation.findAll({
+      where: { user_id: userId },
+      include: [
+          {
+              model: Showtime,
+              attributes: ['start_time'],
+              include: [
+                  {
+                      model: Movie,
+                      attributes: ['title']
+                  }
+              ]
+          }
+      ],
+      attributes: ['id', 'seat']
+  });
+}
 
   // Ανάκτηση μιας κράτησης με βάση το ID προβολής και τη θέση
   async getReservationByShowtimeAndSeat(showtime_id, seat) {

@@ -7,7 +7,7 @@ const authMiddleware = require('../middlewares/authMiddleware');
 // authMiddleware.isAdmin → Μόνο οι Admins μπορούν να βλέπουν ΟΛΟΥΣ τους χρήστες και να διαγράφουν χρήστες.
 
 // Δημιουργία νέου χρήστη (Registration)
-router.post('/', UserController.createUser);
+//router.post('/', UserController.createUser);
 
 // Ανάκτηση όλων των χρηστών (Μόνο Admins)
 router.get('/', authMiddleware.verifyToken, authMiddleware.isAdmin, UserController.getAllUsers);

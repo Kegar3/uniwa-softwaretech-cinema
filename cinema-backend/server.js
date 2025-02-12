@@ -33,6 +33,7 @@ app.use('/admin', AdminRoutes);
 
 // Authentication route
 app.post('/login', AuthRoutes);
+app.post('/register', AuthRoutes);
 
 // Εκκίνηση του διακομιστή
 const PORT = process.env.PORT;

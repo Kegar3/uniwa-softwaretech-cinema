@@ -56,7 +56,13 @@ class ReservationService {
 
   // Ανάκτηση κρατήσεων συγκεκριμένου χρήστη
   async getReservationsByUserId(userId) {
-    return await ReservationRepository.getReservationsByUserId(userId);
+    const reservations = await ReservationRepository.getReservationsByUserId(userId);
+        return reservations.map(res => ({
+            id: res.id,
+            movie: res.Showtime.Movie.title,
+            showtime: res.Showtime.start_time,
+            seat: res.seat
+        }));
   }
 
   // Ενημέρωση κράτησης

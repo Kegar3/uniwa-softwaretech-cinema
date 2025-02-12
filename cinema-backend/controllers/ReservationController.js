@@ -34,10 +34,12 @@ class ReservationController {
   // Ανάκτηση κρατήσεων συγκεκριμένου χρήστη (Μόνο ο ίδιος ο χρήστης ή Admins - middleware)
   async getReservationsByUserId(req, res) {
     try {
-      const reservations = await ReservationService.getReservationsByUserId(req.params.userId);
+      const userId = req.params.userId; // **Προσθέτουμε το userId στο request**
+      const reservations = await ReservationService.getReservationsByUserId(userId);
       res.json(reservations);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+        console.error("Error fetching reservations:", error);
+        res.status(500).json({ error: "Internal Server Error" });
     }
   }
 

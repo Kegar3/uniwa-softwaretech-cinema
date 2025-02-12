@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 
-const Navbar = ({ isAuthenticated, onLogout }) => {
+const Navbar = ({ isAuthenticated, isAdmin, onLogout }) => {
   const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
@@ -25,7 +25,16 @@ const Navbar = ({ isAuthenticated, onLogout }) => {
         {isAuthenticated ? (
           <>
             <li><Link to="/reservations" style={styles.link}>Reservations</Link></li>
-            <li><Link to="/profile" style={styles.link}>{user || "Profile"}</Link></li>
+            {isAdmin ? (
+              <>
+                <li><Link to="/admin" style={styles.link}>Admin Panel</Link></li>
+              </>
+            ) : (
+              <>
+                <li><Link to="/profile" style={styles.link}>{user || "Profile"}</Link></li>
+              </>
+            )}
+            
             <li><Link to="/login" style={styles.link} onClick={handleLogout}>Logout</Link></li>
           </>
         ) : (
@@ -42,6 +51,7 @@ const Navbar = ({ isAuthenticated, onLogout }) => {
 Navbar.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   onLogout: PropTypes.func.isRequired,
+  isAdmin: PropTypes.bool.isRequired
 };
 
 const styles = {

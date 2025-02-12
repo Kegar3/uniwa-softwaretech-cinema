@@ -15,6 +15,7 @@ const ProtectedRoute = ({ isAuthenticated, userRole, children }) => {
 
   return children;
 };
+
 ProtectedRoute.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   userRole: PropTypes.string.isRequired,

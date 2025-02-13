@@ -1,11 +1,13 @@
-const AdminRepository = require('../repositories/AdminRepository');
-
 class AdminService {
+  constructor(adminRepository) {
+    this.adminRepository = adminRepository;
+  }
+
   async getAdminStats() {
-    const totalReservations = await AdminRepository.getTotalReservations();
-    const reservationsByMovie = await AdminRepository.getReservationsByMovie();
-    const mostPopularMovies = await AdminRepository.getMostPopularMovies();
-    const availableSeatsByShowtime = await AdminRepository.getAvailableSeatsByShowtime();
+    const totalReservations = await this.adminRepository.getTotalReservations();
+    const reservationsByMovie = await this.adminRepository.getReservationsByMovie();
+    const mostPopularMovies = await this.adminRepository.getMostPopularMovies();
+    const availableSeatsByShowtime = await this.adminRepository.getAvailableSeatsByShowtime();
 
     return {
       totalReservations,
@@ -16,4 +18,4 @@ class AdminService {
   }
 }
 
-module.exports = new AdminService();
+module.exports = AdminService;

@@ -9,7 +9,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Seats from "./pages/Seats";
 import Profile from "./pages/Profile";
-import AdminPanel from "./pages/AdminPanel";
+import AdminPage from "./pages/AdminPage";
 
 const AppRoutes = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -106,7 +106,7 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/register" element={<Register onRegister={handleLogin}/>} />
         <Route path="/profile" element={isAuthenticated ? <Profile onLogout={handleLogout}/> : <Login onLogin={handleLogin} />} />
-        <Route path="/admin" element={isAuthenticated && isAdmin ? <AdminPanel /> : <Login onLogin={handleLogin} />} />
+        <Route path="/admin" element={isAuthenticated && isAdmin ? <AdminPage /> : <Home />} />
       </Routes>
     </Router>
   );

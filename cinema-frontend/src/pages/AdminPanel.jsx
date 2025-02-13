@@ -16,7 +16,7 @@ const AdminPanel = () => {
         fetchShowtimes();
         fetchReservations();
         fetchUsers();
-    }, []);
+    }, []); // Empty dependency array to run the effect only once when the component mounts
 
     const fetchCurrentUser = async () => {
         try {

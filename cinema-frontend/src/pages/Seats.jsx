@@ -148,9 +148,10 @@ const styles = {
         marginTop: "20px",
         padding: "10px 20px",
         fontSize: "16px",
-        backgroundColor: "#007bff",
+        backgroundColor: "black",
         color: "white",
         border: "none",
+        borderRadius: "5px",
         cursor: "pointer"
     }
 };

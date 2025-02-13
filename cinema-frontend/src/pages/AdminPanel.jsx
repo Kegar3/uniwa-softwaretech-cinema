@@ -4,15 +4,31 @@ const AdminPanel = () => {
     const [movies, setMovies] = useState([]);
     const [showtimes, setShowtimes] = useState([]);
     const [reservations, setReservations] = useState([]);
+    const [users, setUsers] = useState([]);
+    const [currentUser, setCurrentUser] = useState(null);
     const [newMovie, setNewMovie] = useState({ title: "", genre: "", duration: "", release_date: "" });
     const [newShowtime, setNewShowtime] = useState({ movie_id: "", hall: "", start_time: "" });
     const token = localStorage.getItem("token");
 
     useEffect(() => {
+        fetchCurrentUser();
         fetchMovies();
         fetchShowtimes();
         fetchReservations();
+        fetchUsers();
     }, []);
+
+    const fetchCurrentUser = async () => {
+        try {
+            const res = await fetch("http://localhost:3000/users/me", {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            const data = await res.json();
+            setCurrentUser(data);
+        } catch (error) {
+            console.error("Error fetching current user:", error);
+        }
+    };
 
     const fetchMovies = async () => {
         const res = await fetch("http://localhost:3000/movies", {
@@ -47,6 +63,19 @@ const AdminPanel = () => {
         } catch (error) {
             console.error("Error fetching reservations:", error);
             setReservations([]);
+        }
+    };
+
+    const fetchUsers = async () => {
+        try {
+            const res = await fetch("http://localhost:3000/users", {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            const data = await res.json();
+            setUsers(data);
+        } catch (error) {
+            console.error("Error fetching users:", error);
+            setUsers([]);
         }
     };
 
@@ -103,6 +132,26 @@ const AdminPanel = () => {
             headers: { "Authorization": `Bearer ${token}` }
         });
         if (res.ok) fetchReservations();
+    };
+
+    const handleDeleteUser = async (id) => {
+        const res = await fetch(`http://localhost:3000/users/${id}`, {
+            method: "DELETE",
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (res.ok) fetchUsers();
+    };
+
+    const handleUpdateUserRole = async (id, role) => {
+        const res = await fetch(`http://localhost:3000/users/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ role })
+        });
+        if (res.ok) fetchUsers();
     };
 
     return (
@@ -165,6 +214,23 @@ const AdminPanel = () => {
                         <li key={res.id}>
                             Movie: {res.Showtime.Movie.title} | Showtime: {new Date(res.Showtime.start_time).toLocaleString()} | Seat: {res.seat}
                             <button onClick={() => handleDeleteReservation(res.id)}>Cancel Reservation</button>
+                        </li>
+                    ))}
+                </ul>
+            </section>
+
+            <section>
+            <h3>Manage Users</h3>
+                <ul>
+                    {users
+                    .filter(user => currentUser && user.id !== currentUser.id) // Exclude the current user
+                    .map(user => (
+                        <li key={user.id}>
+                            <b>ID:</b> {user.id} - {user.username} ({user.email}) - <b>Role:</b> {user.role}
+                            <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
+                            <button onClick={() => handleUpdateUserRole(user.id, user.role === 'admin' ? 'user' : 'admin')}>
+                                {user.role === 'admin' ? 'Demote to User' : 'Promote to Admin'}
+                            </button>
                         </li>
                     ))}
                 </ul>

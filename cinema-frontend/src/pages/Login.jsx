@@ -53,7 +53,7 @@ const Login = ({ onLogin = () => {} }) => {
 
     return (
         <div className="auth-container">
-            <h2>Login</h2>
+            <h2>Log in</h2>
             {error && <p className="error-message">{error}</p>}
             <form onSubmit={handleLogin} className="auth-form">
                 <input 

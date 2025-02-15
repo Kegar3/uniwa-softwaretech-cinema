@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import "./Auth.css";
 
 const Register = ({onRegister}) => {
     const [username, setUsername] = useState("");
@@ -44,10 +45,10 @@ const Register = ({onRegister}) => {
     };
 
     return (
-        <div>
+        <div className="auth-container">
             <h2>Register</h2>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            <form onSubmit={handleRegister}>
+            {error && <p className="error-message">{error}</p>}
+            <form onSubmit={handleRegister} className="auth-form">
                 <input 
                     type="text" 
                     placeholder="Username" 
@@ -69,7 +70,7 @@ const Register = ({onRegister}) => {
                     onChange={(e) => setPassword(e.target.value)} 
                     required 
                 />
-                <button type="submit">Register</button>
+                <button type="submit" className="auth-button">Register</button>
             </form>
         </div>
     );

@@ -1,0 +1,45 @@
+.showtimes-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .showtime-list {
+    display: flex;
+    flex-wrap: nowrap; /* Ensure the cards are in a single row */
+    gap: 20px;
+    justify-content: center;
+    overflow-x: auto; /* Allows horizontal scrolling if needed */
+    width: 100%; /* Ensure the container is wide enough */
+  }
+  
+  .showtime-card {
+    background-color: #fff;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+    flex-shrink: 0; /* Prevents the card from shrinking */
+  }
+  
+  .showtime-card p {
+    margin-top: 0;
+  }
+  
+  .seats-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #000000;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .seats-link:hover {
+    background-color: #757575;
+  }

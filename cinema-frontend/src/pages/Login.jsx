@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import "./Auth.css"; //styling
 
 const Login = ({ onLogin = () => {} }) => {
     const [username, setUsername] = useState("");
@@ -39,18 +40,22 @@ const Login = ({ onLogin = () => {} }) => {
           }
 
           if (onLogin) onLogin(data.token); // Περνάμε και το user object
-  
+          
+          if(data.user.role === "admin") {
+            navigate("/admin"); // Πάμε στο admin panel
+          }else{    
           navigate("/profile"); // Πάμε στο profile
+          }
       } catch (err) {
           setError(err.message);
       }
   };
 
     return (
-        <div>
-            <h2>Login</h2>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            <form onSubmit={handleLogin}>
+        <div className="auth-container">
+            <h2>Log in</h2>
+            {error && <p className="error-message">{error}</p>}
+            <form onSubmit={handleLogin} className="auth-form">
                 <input 
                     type="text" 
                     placeholder="Username" 
@@ -65,7 +70,7 @@ const Login = ({ onLogin = () => {} }) => {
                     onChange={(e) => setPassword(e.target.value)} 
                     required 
                 />
-                <button type="submit">Login</button>
+                <button type="submit" className="auth-button">Login</button>
             </form>
         </div>
     );

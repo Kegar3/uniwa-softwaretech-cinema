@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import "./Seats.css"; //styling
 
 const Seats = () => {
     const { showtimeId } = useParams();
@@ -103,56 +104,26 @@ const Seats = () => {
     if (error) return <p style={{ color: "red" }}>{error}</p>;
 
     return (
-        <div>
-            <h2>Select Your Seat</h2>
-            <div style={styles.seatContainer}>
-                {availableSeats.map((seat) => {
-                    const isReserved = reservedSeats.has(seat);
-                    return (
-                        <button
-                            key={seat}
-                            onClick={() => handleSelectSeat(seat)}
-                            disabled={isReserved}
-                            style={{
-                                ...styles.seat,
-                                backgroundColor: isReserved ? "darkgray" : (selectedSeat === seat ? "green" : "lightgray"),
-                                cursor: isReserved ? "not-allowed" : "pointer"
-                            }}
-                        >
-                            {seat}
-                        </button>
-                    );
-                })}
-            </div>
-            <button onClick={handleConfirmBooking} style={styles.confirmButton}>Confirm Booking</button>
+        <div className="seats-container">
+          <h2>Select Your Seat</h2>
+          <div className="seat-grid">
+            {availableSeats.map((seat) => {
+              const isReserved = reservedSeats.has(seat);
+              return (
+                <button
+                  key={seat}
+                  onClick={() => handleSelectSeat(seat)}
+                  disabled={isReserved}
+                  className={`seat ${isReserved ? "reserved" : selectedSeat === seat ? "selected" : ""}`}
+                >
+                  {seat}
+                </button>
+              );
+            })}
+          </div>
+          <button onClick={handleConfirmBooking} className="confirm-button">Confirm Booking</button>
         </div>
-    );
-};
-
-const styles = {
-    seatContainer: {
-        display: "grid",
-        gridTemplateColumns: "repeat(10, 40px)",
-        gap: "10px",
-        justifyContent: "center",
-        marginTop: "20px"
-    },
-    seat: {
-        width: "40px",
-        height: "40px",
-        textAlign: "center",
-        border: "1px solid black",
-        fontSize: "14px"
-    },
-    confirmButton: {
-        marginTop: "20px",
-        padding: "10px 20px",
-        fontSize: "16px",
-        backgroundColor: "#007bff",
-        color: "white",
-        border: "none",
-        cursor: "pointer"
-    }
+      );
 };
 
 export default Seats;

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types"
+import "./Profile.css"
 
 const Profile = ({onLogout}) => {
     const [user, setUser] = useState(null);
@@ -34,16 +35,16 @@ const Profile = ({onLogout}) => {
     }, []);
 
     return (
-        <div>
+        <div className="profile-container">
             <h2>My Profile</h2>
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p className="error-message">{error}</p>}
             {user ? (
-                <div>
+                <div className="profile-details">
                     <p><strong>Username:</strong> {user.username}</p>
                     <p><strong>Email:</strong> {user.email}</p>
                     <p><strong>Role:</strong> {user.role || "User"}</p>
                     <p><strong>Created At:</strong> {new Date(user.createdAt).toLocaleString()}</p>
-                    <button onClick={() => {
+                    <button className="logout-button" onClick={() => {
                         onLogout();
                         window.location.href = "/login"; 
                     }}>

@@ -1,54 +1,34 @@
 import { useState } from "react";
 import AdminDashboard from "./AdminDashboard";
 import AdminPanel from "./AdminPanel";
+import "./AdminPage.css"; // Import the CSS file for styling
 
 const AdminPage = () => {
-    const [view, setView] = useState("dashboard"); // Default view is "dashboard"
+  const [view, setView] = useState("dashboard"); // Default view is "dashboard"
 
-    return (
-        <div>
-            <h2>Admin Page</h2>
-            <div style={styles.nav}>
-                <button onClick={() => setView("dashboard")} style={view === "dashboard" ? styles.activeButton : styles.button}>
-                    Dashboard
-                </button>
-                <button onClick={() => setView("panel")} style={view === "panel" ? styles.activeButton : styles.button}>
-                    Panel
-                </button>
-            </div>
-            <div style={styles.content}>
-                {view === "dashboard" && <AdminDashboard />}
-                {view === "panel" && <AdminPanel />}
-            </div>
-        </div>
-    );
-};
-
-const styles = {
-    nav: {
-        display: "flex",
-        gap: "10px",
-        marginBottom: "20px"
-    },
-    button: {
-        padding: "10px 20px",
-        cursor: "pointer",
-        backgroundColor: "gray",
-        color: "white",
-        border: "none",
-        borderRadius: "5px"
-    },
-    activeButton: {
-        padding: "10px 20px",
-        cursor: "pointer",
-        backgroundColor: "black",
-        color: "white",
-        border: "none",
-        borderRadius: "5px"
-    },
-    content: {
-        marginTop: "20px"
-    }
+  return (
+    <div className="admin-page-container">
+      <h2>Admin Page</h2>
+      <div className="nav">
+        <button
+          onClick={() => setView("dashboard")}
+          className={view === "dashboard" ? "active-button" : "button"}
+        >
+          Dashboard
+        </button>
+        <button
+          onClick={() => setView("panel")}
+          className={view === "panel" ? "active-button" : "button"}
+        >
+          Panel
+        </button>
+      </div>
+      <div className="content">
+        {view === "dashboard" && <AdminDashboard />}
+        {view === "panel" && <AdminPanel />}
+      </div>
+    </div>
+  );
 };
 
 export default AdminPage;

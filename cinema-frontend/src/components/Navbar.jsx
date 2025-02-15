@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
+import "./Navbar.css"; //styling
 
 const Navbar = ({ isAuthenticated, isAdmin, onLogout }) => {
   const [user, setUser] = useState(null);
@@ -17,30 +18,30 @@ const Navbar = ({ isAuthenticated, isAdmin, onLogout }) => {
     };
 
     return (
-        <nav style={styles.navbar}>
-        <h2 style={styles.logo}>Uniwa Cinema Booking</h2>
-        <ul style={styles.navLinks}>
-        <li><Link to="/" style={styles.link}>Home</Link></li>
-        <li><Link to="/movies" style={styles.link}>Movies</Link></li>
+        <nav className="navbar">
+        <h2 className="logo">UNIWA Cinema Booking</h2>
+        <ul className="nav-links">
+        <li><Link to="/" className="link">Home</Link></li>
+        <li><Link to="/movies" className="link">Movies</Link></li>
         {isAuthenticated ? (
           <>
-            <li><Link to="/reservations" style={styles.link}>Reservations</Link></li>
+            <li><Link to="/reservations" className="link">Reservations</Link></li>
             {isAdmin ? (
               <>
-                <li><Link to="/admin" style={styles.link}>Admin Panel</Link></li>
+                <li><Link to="/admin" className="link">Admin Panel</Link></li>
               </>
             ) : (
               <>
-                <li><Link to="/profile" style={styles.link}>{user || "Profile"}</Link></li>
+                <li><Link to="/profile" className="link">{user || "Profile"}</Link></li>
               </>
             )}
             
-            <li><Link to="/login" style={styles.link} onClick={handleLogout}>Logout</Link></li>
+            <li><Link to="/login" className="link" onClick={handleLogout}>Logout</Link></li>
           </>
         ) : (
           <>
-            <li><Link to="/login" style={styles.link}>Login</Link></li>
-            <li><Link to="/register" style={styles.link}>Register</Link></li>
+            <li><Link to="/login" className="link">Login</Link></li>
+            <li><Link to="/register" className="link">Register</Link></li>
           </>
         )}
         </ul>
@@ -53,29 +54,4 @@ Navbar.propTypes = {
   onLogout: PropTypes.func.isRequired,
   isAdmin: PropTypes.bool.isRequired
 };
-
-const styles = {
-  navbar: {
-    display: "flex",
-    justifyContent: "space-between",
-    border: "1px solid black",
-    alignItems: "center",
-    padding: "5px 30px",
-    backgroundColor: "black",
-    color: "#fff",
-    borderRadius: "10px",
-  },
-  logo: { fontSize: "2rem" },
-  navLinks: {
-    display: "flex",
-    listStyle: "none",
-    gap: "30px",
-  },
-  link: {
-    textDecoration: "none",
-    color: "white",
-    fontSize: "1.5rem"
-  }
-};
-
 export default Navbar;

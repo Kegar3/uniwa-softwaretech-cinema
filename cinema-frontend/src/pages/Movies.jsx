@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import "./Movies.css"; //Styling
 
 function Movies() {
   const [movies, setMovies] = useState([]);
@@ -21,7 +22,7 @@ function Movies() {
             <p><strong>Genre:</strong> {movie.genre}</p>
             <p><strong>Duration:</strong> {movie.duration} min</p>
             <p><strong>Release Date:</strong> {new Date(movie.release_date).toDateString()}</p>
-            <Link to={`/movies/${movie.id}/showtimes`}>View Showtimes</Link>
+            <Link to={`/movies/${movie.id}/showtimes`} className="showtimes-link" >View Showtimes</Link>
           </div>
         ))}
       </div>

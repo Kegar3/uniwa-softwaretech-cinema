@@ -1,54 +1,53 @@
 const ReservationService = require('../services/ReservationService');
+const reservationRepository = require('../repositories/ReservationRepository');
+const showtimeRepository = require('../repositories/ShowtimeRepository');
+
+const reservationService = new ReservationService(reservationRepository, showtimeRepository);
 
 class ReservationController {
-  // Δημιουργία νέας κράτησης
   async createReservation(req, res) {
     try {
-      const reservation = await ReservationService.createReservation(req.body);
+      const reservation = await reservationService.createReservation(req.body);
       res.status(201).json(reservation);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   }
 
-  // Ανάκτηση όλων των κρατήσεων (Μόνο Admins - έλεγχος μέσω middleware)
   async getAllReservations(req, res) {
     try {
-      const reservations = await ReservationService.getAllReservations();
+      const reservations = await reservationService.getAllReservations();
       res.json(reservations);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   }
 
-  // Ανάκτηση μιας κράτησης με βάση το ID (Μόνο ο κάτοχος ή Admins - έλεγχος μέσω middleware)
   async getReservationById(req, res) {
     try {
-      const reservation = await ReservationService.getReservationById(req.params.id);
+      const reservation = await reservationService.getReservationById(req.params.id);
       res.json(reservation);
     } catch (error) {
       res.status(404).json({ error: error.message });
     }
   }
 
-  // Ανάκτηση κρατήσεων συγκεκριμένου χρήστη (Μόνο ο ίδιος ο χρήστης ή Admins - middleware)
   async getReservationsByUserId(req, res) {
     try {
-      const userId = req.params.userId; // **Προσθέτουμε το userId στο request**
-      const reservations = await ReservationService.getReservationsByUserId(userId);
+      const userId = req.params.userId;
+      const reservations = await reservationService.getReservationsByUserId(userId);
       res.json(reservations);
     } catch (error) {
-        console.error("Error fetching reservations:", error);
-        res.status(500).json({ error: "Internal Server Error" });
+      console.error("Error fetching reservations:", error);
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
 
-  // Ενημέρωση κράτησης (Μόνο ο κάτοχος ή Admins - middleware)
   async updateReservation(req, res) {
     try {
-      const updatedReservation = await ReservationService.updateReservation(req.params.id, req.user.id, {
+      const updatedReservation = await reservationService.updateReservation(req.params.id, req.user.id, {
         ...req.body,
-        user_role: req.user.role, // **Προσθέτουμε το role στο request**
+        user_role: req.user.role,
       });
       res.json(updatedReservation);
     } catch (error) {
@@ -56,38 +55,35 @@ class ReservationController {
     }
   }
 
-  // Διαγραφή κράτησης (Μόνο ο κάτοχος ή Admins - middleware)
   async cancelReservation(req, res) {
     try {
-      await ReservationService.cancelReservation(parseInt(req.params.id), req.user);
+      await reservationService.cancelReservation(parseInt(req.params.id), req.user);
       res.json({ message: 'Reservation cancelled successfully.' });
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   }
 
-  // Ανάκτηση κρατήσεων συγκεκριμένου χρήστη (Μόνο ο ίδιος ο χρήστης ή Admins - middleware)
-  async getUserReservations (req, res){
+  async getUserReservations(req, res) {
     try {
-      const reservations = await ReservationService.getReservationsByUser(parseInt(req.params.id), req.user);
+      const reservations = await reservationService.getReservationsByUser(parseInt(req.params.id), req.user);
       res.json(reservations);
     } catch (error) {
       res.status(403).json({ error: error.message });
     }
   }
 
-  // Ανάκτηση παγιωμένων κρατήσεων με δυνατότητα φιλτραρίσματος
   async getPaginatedReservations(req, res) {
     try {
       const page = parseInt(req.query.page) || 1;
       const limit = parseInt(req.query.limit) || 10;
       const filters = {};
-  
+
       if (req.query.user_id) filters.user_id = req.query.user_id;
       if (req.query.showtime_id) filters.showtime_id = req.query.showtime_id;
-  
-      const { count, rows } = await ReservationService.getPaginatedReservations(page, limit, filters);
-  
+
+      const { count, rows } = await reservationService.getPaginatedReservations(page, limit, filters);
+
       res.json({
         total: count,
         page,

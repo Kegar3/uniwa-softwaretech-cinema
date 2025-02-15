@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./AdminPanel.css"; // stylling
 
 const AdminPanel = () => {
     const [movies, setMovies] = useState([]);
@@ -155,10 +156,10 @@ const AdminPanel = () => {
     };
 
     return (
-        <div>
+        <div className="admin-panel-container">
             <h2>Admin Panel</h2>
 
-            <section>
+            <section className="admin-section">
                 <h3>Manage Movies</h3>
                 <input type="text" placeholder="Title" onChange={(e) => setNewMovie({ ...newMovie, title: e.target.value })} />
                 <input type="text" placeholder="Genre" onChange={(e) => setNewMovie({ ...newMovie, genre: e.target.value })} />
@@ -169,74 +170,75 @@ const AdminPanel = () => {
                 <ul>
                     {movies.map(movie => (
                         <li key={movie.id}>
-                            {movie.title} ({movie.genre}) - <b>ID:</b> {movie.id}
+                            {movie.title} ({movie.genre})  <b>ID:</b> {movie.id}
                             <button onClick={() => handleDeleteMovie(movie.id)}>Delete</button>
                         </li>
                     ))}
                 </ul>
             </section>
 
-            <section>
-                <h3>Manage Showtimes</h3>
-                <select onChange={(e) => setNewShowtime({ ...newShowtime, movie_id: e.target.value })}>
-                    <option value="">Select Movie</option>
-                    {movies.map(movie => (
-                        <option key={movie.id} value={movie.id}>
-                            {movie.title} (ID: {movie.id})
-                        </option>
-                    ))}
-                </select>
-                <select onChange={(e) => setNewShowtime({ ...newShowtime, hall: e.target.value })}>
-                    <option value="">Select Hall</option>
-                    <option value="1">Hall 1</option>
-                    <option value="2">Hall 2</option>
-                </select>
-                <input type="datetime-local" placeholder="Start Time" onChange={(e) => setNewShowtime({ ...newShowtime, start_time: e.target.value })} />
-                <button onClick={handleAddShowtime}>Add Showtime</button>
-
-                <ul>
-                    {showtimes.map(showtime => (
-                        <li key={showtime.id}>
-                            <b>Showtime ID:</b> {showtime.id} | 
-                            Movie ID: {showtime.movie_id} | 
-                            Hall: {showtime.hall} | 
-                            Time: {new Date(showtime.start_time).toLocaleString()}
-                            <button onClick={() => handleDeleteShowtime(showtime.id)}>Delete</button>
-                        </li>
-                    ))}
-                </ul>
-            </section>
-
-            <section>
-                <h3>Manage Reservations</h3>
-                <ul>
-                    {reservations.map(res => (
-                        <li key={res.id}>
-                            Movie: {res.Showtime.Movie.title} | Showtime: {new Date(res.Showtime.start_time).toLocaleString()} | Seat: {res.seat}
-                            <button onClick={() => handleDeleteReservation(res.id)}>Cancel Reservation</button>
-                        </li>
-                    ))}
-                </ul>
-            </section>
-
-            <section>
-            <h3>Manage Users</h3>
-                <ul>
-                    {users
-                    .filter(user => currentUser && user.id !== currentUser.id) // Exclude the current user
-                    .map(user => (
-                        <li key={user.id}>
-                            <b>ID:</b> {user.id} - {user.username} ({user.email}) - <b>Role:</b> {user.role}
-                            <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
-                            <button onClick={() => handleUpdateUserRole(user.id, user.role === 'admin' ? 'user' : 'admin')}>
-                                {user.role === 'admin' ? 'Demote to User' : 'Promote to Admin'}
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            </section>
+            <section className="admin-section">
+            <h3>Manage Showtimes</h3>
+        <div className="form-group">
+          <select onChange={(e) => setNewShowtime({ ...newShowtime, movie_id: e.target.value })}>
+            <option value="">Select Movie</option>
+            {movies.map(movie => (
+              <option key={movie.id} value={movie.id}>
+                {movie.title} (ID: {movie.id})
+              </option>
+            ))}
+          </select>
+          <select onChange={(e) => setNewShowtime({ ...newShowtime, hall: e.target.value })}>
+            <option value="">Select Hall</option>
+            <option value="1">Hall 1</option>
+            <option value="2">Hall 2</option>
+          </select>
+          <input type="datetime-local" placeholder="Start Time" onChange={(e) => setNewShowtime({ ...newShowtime, start_time: e.target.value })} />
+          <button onClick={handleAddShowtime}>Add Showtime</button>
         </div>
-    );
+        <ul>
+          {showtimes.map(showtime => (
+            <li key={showtime.id}>
+              <b>Showtime ID:</b> {showtime.id} | 
+              Movie ID: {showtime.movie_id} | 
+              Hall: {showtime.hall} | 
+              Time: {new Date(showtime.start_time).toLocaleString()}
+              <button onClick={() => handleDeleteShowtime(showtime.id)}>Delete</button>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="admin-section">
+        <h3>Manage Reservations</h3>
+        <ul>
+          {reservations.map(res => (
+            <li key={res.id}>
+              Movie: {res.Showtime.Movie.title} | Showtime: {new Date(res.Showtime.start_time).toLocaleString()} | Seat: {res.seat}
+              <button onClick={() => handleDeleteReservation(res.id)}>Cancel Reservation</button>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="admin-section">
+        <h3>Manage Users</h3>
+        <ul>
+          {users
+          .filter(user => currentUser && user.id !== currentUser.id) // Exclude the current user
+          .map(user => (
+            <li key={user.id}>
+              <b>ID:</b> {user.id}  {user.username} ({user.email})  <b>Role:</b> {user.role}
+              <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
+              <button onClick={() => handleUpdateUserRole(user.id, user.role === 'admin' ? 'user' : 'admin')}>
+                {user.role === 'admin' ? 'Demote to User' : 'Promote to Admin'}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  );
 };
 
 export default AdminPanel;

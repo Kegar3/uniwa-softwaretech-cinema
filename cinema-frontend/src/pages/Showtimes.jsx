@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import "./Showtimes.css"; //styling
 
 const Showtimes = () => {
     const { id } = useParams();
@@ -22,16 +23,18 @@ const Showtimes = () => {
     }, [id]);
 
     return (
-        <div>
-            <h1>{movieTitle}:</h1>
+        <div className="showtimes-container">
+            <h2>{movieTitle}:</h2>
+            <div className="showtime-list">
             {showtimes.map(showtime => (
-                <div key={showtime.id}>
+                <div key={showtime.id} className="showtime-card">
                     <h3>Hall: {showtime.hall}</h3>
                     <p><b>Start Time:</b> {new Date(showtime.start_time).toLocaleString()}</p>
                     <p><b>Available Seats:</b> {showtime.available_seats}</p>
-                    <Link to={`/showtimes/${showtime.id}/seats`}>View Seats</Link>
+                    <Link to={`/showtimes/${showtime.id}/seats`} className="seats-link">View Seats</Link>
                 </div>
             ))}
+            </div>
         </div>
     );
 };

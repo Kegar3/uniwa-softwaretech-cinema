@@ -1,0 +1,40 @@
+.reservations-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .reservations-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .reservation-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .reservation-details {
+    display: flex;
+    gap: 10px;
+    margin-right: 10px;
+  }
+  
+  .cancel-button {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .cancel-button:hover {
+    background-color: #757575;
+  }

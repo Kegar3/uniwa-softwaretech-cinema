@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./Reservations.css"; //styling
 
 const Reservations = () => {
     const [reservations, setReservations] = useState([]);
@@ -95,54 +96,26 @@ const Reservations = () => {
     if (error) return <p style={{ color: "red" }}>{error}</p>;
 
     return (
-        <div>
+        <div className="reservations-container">
             <h2>My Reservations</h2>
-            <ul style={styles.list}>
+            <ul className="reservations-list">
                 {reservations.length === 0 ? (
                     <p>No reservations found.</p>
                 ) : (
                     reservations.map((res) => (
-                        <li key={res.id} style={styles.reservationItem}>  
-                            <div style={styles.reservationDetails}>
+                        <li key={res.id} className="reservation-item">  
+                            <div className="reservation-details">
                                 <strong>Movie:</strong> {res.movie || "Unknown"} <br />
                                 <strong>Showtime:</strong> {res.showtime ? new Date(res.showtime).toLocaleString() : "Unknown"} <br />
                                 <strong>Seat:</strong> {res.seat}
                             </div>
-                            <button onClick={() => handleCancelReservation(res.id)} style={styles.cancelButton}>Cancel Reservation</button>
+                            <button onClick={() => handleCancelReservation(res.id)} className="cancel-button">Cancel Reservation</button>
                         </li>
                     ))
                 )}
             </ul>
         </div>
     );
-};
-
-const styles = {
-    list: {
-        listStyle: "none",
-        padding: 0,
-    },
-    reservationItem: {
-        display: "flex",
-        border: "1px solid ",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "10px",
-        marginBottom: "10px",
-        backgroundColor: "#f9f9f9",
-        borderRadius: "5px",
-    },
-    reservationDetails: {
-        marginRight: "10px",
-    },
-    cancelButton: {
-        backgroundColor: "black",
-        color: "white",
-        border: "none",
-        padding: "8px 12px",
-        cursor: "pointer",
-        borderRadius: "5px",
-    }
 };
 
 export default Reservations;

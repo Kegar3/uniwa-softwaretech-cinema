@@ -47,7 +47,7 @@ const Login = ({ onLogin = () => {} }) => {
           navigate("/profile"); // Πάμε στο profile
           }
       } catch (err) {
-          setError(err.message);
+        setError(err.message);
       }
   };
 

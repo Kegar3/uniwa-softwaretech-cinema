@@ -19,17 +19,27 @@ function Movies() {
         {movies.map((movie) => (
           <div key={movie.id} className="movie-card">
             <h3>{movie.title}</h3>
-            <p><strong>Genre:</strong> {movie.genre}</p>
-            <p><strong>Duration:</strong> {movie.duration} min</p>
-            <p><strong>Release Date:</strong> {new Date(movie.release_date).toDateString()}</p>
-            <Link to={`/movies/${movie.id}/showtimes`} className="showtimes-link" >View Showtimes</Link>
+            <p>
+              <strong>Genre:</strong> {movie.genre}
+            </p>
+            <p>
+              <strong>Duration:</strong> {movie.duration} min
+            </p>
+            <p>
+              <strong>Release Date:</strong>{" "}
+              {new Date(movie.release_date).toDateString()}
+            </p>
+            <Link
+              to={`/movies/${movie.id}/showtimes`}
+              className="showtimes-link"
+            >
+              View Showtimes
+            </Link>
           </div>
         ))}
       </div>
     </div>
   );
-
-  
 }
 
 export default Movies;

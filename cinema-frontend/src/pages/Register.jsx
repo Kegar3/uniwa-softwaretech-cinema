@@ -45,34 +45,36 @@ const Register = ({onRegister}) => {
     };
 
     return (
-        <div className="auth-container">
-            <h2>Register</h2>
-            {error && <p className="error-message">{error}</p>}
-            <form onSubmit={handleRegister} className="auth-form">
-                <input 
-                    type="text" 
-                    placeholder="Username" 
-                    value={username} 
-                    onChange={(e) => setUsername(e.target.value)} 
-                    required 
-                />
-                <input 
-                    type="email" 
-                    placeholder="Email" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    required 
-                />
-                <input 
-                    type="password" 
-                    placeholder="Password" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
-                    required 
-                />
-                <button type="submit" className="auth-button">Register</button>
-            </form>
-        </div>
+      <div className="auth-container">
+        <h2>Register</h2>
+        {error && <p className="error-message">{error}</p>}
+        <form onSubmit={handleRegister} className="auth-form">
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit" className="auth-button">
+            Register
+          </button>
+        </form>
+      </div>
     );
 };
 

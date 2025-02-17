@@ -96,25 +96,34 @@ const Reservations = () => {
     if (error) return <p style={{ color: "red" }}>{error}</p>;
 
     return (
-        <div className="reservations-container">
-            <h2>My Reservations</h2>
-            <ul className="reservations-list">
-                {reservations.length === 0 ? (
-                    <p>No reservations found.</p>
-                ) : (
-                    reservations.map((res) => (
-                        <li key={res.id} className="reservation-item">  
-                            <div className="reservation-details">
-                                <strong>Movie:</strong> {res.movie || "Unknown"} <br />
-                                <strong>Showtime:</strong> {res.showtime ? new Date(res.showtime).toLocaleString() : "Unknown"} <br />
-                                <strong>Seat:</strong> {res.seat}
-                            </div>
-                            <button onClick={() => handleCancelReservation(res.id)} className="cancel-button">Cancel Reservation</button>
-                        </li>
-                    ))
-                )}
-            </ul>
-        </div>
+      <div className="reservations-container">
+        <h2>My Reservations</h2>
+        <ul className="reservations-list">
+          {reservations.length === 0 ? (
+            <p>No reservations found.</p>
+          ) : (
+            reservations.map((res) => (
+              <li key={res.id} className="reservation-item">
+                <div className="reservation-details">
+                  <strong>Movie:</strong> {res.movie || "Unknown"} <br />
+                  <strong>Showtime:</strong>{" "}
+                  {res.showtime
+                    ? new Date(res.showtime).toLocaleString()
+                    : "Unknown"}{" "}
+                  <br />
+                  <strong>Seat:</strong> {res.seat}
+                </div>
+                <button
+                  onClick={() => handleCancelReservation(res.id)}
+                  className="cancel-button"
+                >
+                  Cancel Reservation
+                </button>
+              </li>
+            ))
+          )}
+        </ul>
+      </div>
     );
 };
 

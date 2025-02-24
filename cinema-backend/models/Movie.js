@@ -24,6 +24,10 @@ const Movie = sequelize.define('Movie', {
       type: DataTypes.DATE,
       allowNull: false,
     },
+    poster_url: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    }
   });
   
   module.exports = Movie;

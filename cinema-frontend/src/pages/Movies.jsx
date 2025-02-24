@@ -18,6 +18,9 @@ function Movies() {
       <div className="movie-list">
         {movies.map((movie) => (
           <div key={movie.id} className="movie-card">
+            {movie.poster_url && (
+              <img src={movie.poster_url} alt={`${movie.title} poster`} className="movie-poster" />
+            )}
             <h3>{movie.title}</h3>
             <p>
               <strong>Genre:</strong> {movie.genre}

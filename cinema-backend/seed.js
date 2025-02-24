@@ -20,9 +20,9 @@ const seedDatabase = async () => {
 
   // **2️⃣ Προσθήκη Ταινιών**
   const movies = await Movie.bulkCreate([
-    { title: 'The Matrix', duration: 136, genre: 'Sci-Fi', release_date: '1999-03-31' },
-    { title: 'Inception', duration: 148, genre: 'Sci-Fi', release_date: '2010-07-16' },
-    { title: 'Interstellar', duration: 169, genre: 'Sci-Fi', release_date: '2014-11-07' }
+    { title: 'The Matrix', duration: 136, genre: 'Sci-Fi', release_date: '1999-03-31', poster_url: '/images/matrix.jpg' },
+    { title: 'Inception', duration: 148, genre: 'Sci-Fi', release_date: '2010-07-16', poster_url: '/images/inception.jpg' },
+    { title: 'Interstellar', duration: 169, genre: 'Sci-Fi', release_date: '2014-11-07', poster_url: '/images/interstellar.jpg' }
   ]);
   console.log('Movies seeded!');
 
@@ -43,6 +43,13 @@ const seedDatabase = async () => {
     { showtime_id: 3, seat: 'C3', user_id: 3 }
   ]);
   console.log('Reservations seeded!');
+
+  // **5️⃣ Ενημέρωση διαθέσιμων θέσεων για κάθε προβολή**
+  for (const showtime of showtimes) {
+    const reservedSeatsCount = await Reservation.count({ where: { showtime_id: showtime.id } });
+    await showtime.update({ available_seats: 50 - reservedSeatsCount });
+  }
+  console.log('Available seats updated!');
 
   console.log('Seeding completed successfully!');
   process.exit();

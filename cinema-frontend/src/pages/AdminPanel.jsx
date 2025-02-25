@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import "./AdminPanel.css"; // styling
 
 const AdminPanel = () => {
@@ -98,7 +99,12 @@ const AdminPanel = () => {
       },
       body: formData
     });
-    if (res.ok) fetchMovies();
+    if (res.ok) {
+      fetchMovies();
+      toast.success("Movie added successfully!");
+    } else {
+      toast.error("Failed to add movie.");
+    }
   };
 
   const handleDeleteMovie = async (id) => {
@@ -110,6 +116,9 @@ const AdminPanel = () => {
       fetchMovies();
       fetchShowtimes();
       fetchReservations();
+      toast.success("Movie deleted successfully!");
+    } else {
+      toast.error("Failed to delete movie.");
     }
   };
 
@@ -122,7 +131,12 @@ const AdminPanel = () => {
       },
       body: JSON.stringify(newShowtime)
     });
-    if (res.ok) fetchShowtimes();
+    if (res.ok) {
+      fetchShowtimes();
+      toast.success("Showtime added successfully!");
+    } else {
+      toast.error("Failed to add showtime.");
+    }
   };
 
   const handleDeleteShowtime = async (id) => {
@@ -133,6 +147,9 @@ const AdminPanel = () => {
     if (res.ok) {
       fetchShowtimes();
       fetchReservations();
+      toast.success("Showtime deleted successfully!");
+    } else {
+      toast.error("Failed to delete showtime.");
     }
   };
 
@@ -141,7 +158,12 @@ const AdminPanel = () => {
       method: "DELETE",
       headers: { "Authorization": `Bearer ${token}` }
     });
-    if (res.ok) fetchReservations();
+    if (res.ok) {
+      fetchReservations();
+      toast.success("Reservation cancelled successfully!");
+    } else {
+      toast.error("Failed to cancel reservation.");
+    }
   };
 
   const handleDeleteUser = async (id) => {
@@ -149,7 +171,12 @@ const AdminPanel = () => {
       method: "DELETE",
       headers: { "Authorization": `Bearer ${token}` }
     });
-    if (res.ok) fetchUsers();
+    if (res.ok) {
+      fetchUsers();
+      toast.success("User deleted successfully!");
+    } else {
+      toast.error("Failed to delete user.");
+    }
   };
 
   const handleUpdateUserRole = async (id, role) => {
@@ -161,7 +188,12 @@ const AdminPanel = () => {
       },
       body: JSON.stringify({ role })
     });
-    if (res.ok) fetchUsers();
+    if (res.ok) {
+      fetchUsers();
+      toast.success("User role updated successfully!");
+    } else {
+      toast.error("Failed to update user role.");
+    }
   };
 
   return (

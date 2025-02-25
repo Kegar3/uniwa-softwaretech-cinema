@@ -1,6 +1,7 @@
 const express = require('express'); // Φόρτωση του Express
 const sequelize = require('./config/config'); // Φόρτωση της σύνδεσης βάσης δεδομένων
 const cors = require('cors');
+const path = require('path');
 
 const UserRoutes = require('./routes/UserRoutes'); // Εισαγωγή νέων routes για χρήστες
 const ReservationRoutes = require('./routes/ReservationRoutes'); // Εισαγωγή νέων routes για reservations
@@ -13,6 +14,9 @@ require('dotenv').config(); // Load environment variables from .env file
 
 const app = express(); // Δημιουργία Express εφαρμογής
 app.use(express.json()); // Middleware για διαχείριση JSON δεδομένων αιτημάτων
+
+// Serve static files from the public directory
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 // Συγχρονισμός της βάσης δεδομένων
 sequelize

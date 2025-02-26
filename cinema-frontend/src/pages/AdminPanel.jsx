@@ -219,6 +219,7 @@ const AdminPanel = () => {
         <input
           type="number"
           placeholder="Duration"
+          min="1"
           onChange={(e) =>
             setNewMovie({ ...newMovie, duration: e.target.value })
           }

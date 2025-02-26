@@ -13,8 +13,8 @@ function Movies() {
   }, []);
 
   return (
-    <div>
-      <h2>Available Movies</h2>
+    <div className="movies-container">
+      <h2>Available Movies:</h2>
       <div className="movie-list">
         {movies.map((movie) => (
           <div key={movie.id} className="movie-card">

@@ -1,5 +1,8 @@
 .movies-container {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .movie-list {

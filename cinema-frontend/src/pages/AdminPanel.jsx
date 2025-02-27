@@ -202,42 +202,43 @@ const AdminPanel = () => {
 
       <section className="admin-section">
         <h3>Manage Movies</h3>
-        <input
-          type="text"
-          placeholder="Title"
-          onChange={(e) =>
-            setNewMovie({ ...newMovie, title: e.target.value })
-          }
-        />
-        <input
-          type="text"
-          placeholder="Genre"
-          onChange={(e) =>
-            setNewMovie({ ...newMovie, genre: e.target.value })
-          }
-        />
-        <input
-          type="number"
-          placeholder="Duration"
-          min="1"
-          onChange={(e) =>
-            setNewMovie({ ...newMovie, duration: e.target.value })
-          }
-        />
-        <input
-          type="date"
-          placeholder="Release Date"
-          onChange={(e) =>
-            setNewMovie({ ...newMovie, release_date: e.target.value })
-          }
-        />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setPosterFile(e.target.files[0])} // Handle file input
-        />
-        <button onClick={handleAddMovie}>Add Movie</button>
-
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Title"
+            onChange={(e) =>
+              setNewMovie({ ...newMovie, title: e.target.value })
+            }
+          />
+          <input
+            type="text"
+            placeholder="Genre"
+            onChange={(e) =>
+              setNewMovie({ ...newMovie, genre: e.target.value })
+            }
+          />
+          <input
+            type="number"
+            placeholder="Duration"
+            min="1"
+            onChange={(e) =>
+              setNewMovie({ ...newMovie, duration: e.target.value })
+            }
+          />
+          <input
+            type="date"
+            placeholder="Release Date"
+            onChange={(e) =>
+              setNewMovie({ ...newMovie, release_date: e.target.value })
+            }
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setPosterFile(e.target.files[0])} // Handle file input
+          />
+          <button onClick={handleAddMovie}>Add Movie</button>
+        </div>
         <ul>
           {movies.map((movie) => (
             <li key={movie.id}>

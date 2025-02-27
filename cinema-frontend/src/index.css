@@ -9,6 +9,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+::selection {
+  color: #ffffff;
+  background: #555555;
+}
 
 body {
   margin: 5;

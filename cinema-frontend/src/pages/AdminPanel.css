@@ -1,15 +1,19 @@
 .admin-panel-container {
     padding: 40px;
     text-align: center;
-    background-color: #f0f0f0;
+    background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 20px auto;
   }
   
   .admin-section {
     margin-bottom: 40px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
   }
   
   .admin-section h3 {
@@ -22,6 +26,13 @@
     flex-direction: column;
     gap: 10px;
     margin-bottom: 20px;
+  }
+
+  .form-group input[type="file"] {
+    border: 1px solid black;
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
   }
   
   .form-group input,

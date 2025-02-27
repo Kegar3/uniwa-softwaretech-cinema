@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./Auth.css"; //styling
+import { toast } from "react-toastify"; // import toastify
 
 const Login = ({ onLogin = () => {} }) => {
     const [username, setUsername] = useState("");
@@ -42,9 +43,11 @@ const Login = ({ onLogin = () => {} }) => {
           if (onLogin) onLogin(data.token); // Περνάμε και το user object
           
           if(data.user.role === "admin") {
+            toast.success("Welcome back!");
             navigate("/admin"); // Πάμε στο admin panel
-          }else{    
-          navigate("/profile"); // Πάμε στο profile
+          }else{
+            toast.success("Welcome back!");    
+            navigate("/profile"); // Πάμε στο profile
           }
       } catch (err) {
         setError(err.message);

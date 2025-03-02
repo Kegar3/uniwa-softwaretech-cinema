@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./Auth.css";
+import { toast } from "react-toastify";
 
 const Register = ({onRegister}) => {
     const [username, setUsername] = useState("");
@@ -36,11 +37,13 @@ const Register = ({onRegister}) => {
             localStorage.setItem("username", data.user.username); // Αποθήκευση username
             
             // Save the token and redirect to Movies
-            if (onRegister) onRegister(data.token); 
+            if (onRegister) onRegister(data.token);
+            toast.success("Registration successful!"); 
             navigate("/profile");
 
         } catch (err) {
             setError(err.message);
+            toast.error("Registration failed!");
         }
     };
 

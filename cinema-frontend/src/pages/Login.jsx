@@ -50,6 +50,7 @@ const Login = ({ onLogin = () => {} }) => {
             navigate("/profile"); // Πάμε στο profile
           }
       } catch (err) {
+        toast.error("Login failed!");
         setError(err.message);
       }
   };

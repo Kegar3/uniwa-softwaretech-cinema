@@ -9,7 +9,7 @@ const seedDatabase = async () => {
   await sequelize.sync({ force: true }); // **ΔΙΑΓΡΑΦΕΙ ΚΑΙ ΞΑΝΑΦΤΙΑΧΝΕΙ ΟΛΑ ΤΑ TABLES**
   console.log('Database synced!');
 
-  // **1️⃣ Προσθήκη χρηστών (admin & κανονικοί χρήστες)**
+  // ** Προσθήκη χρηστών (admin & κανονικοί χρήστες)**
   const hashedPassword = await bcrypt.hash('0203', 10);
   const users = await User.bulkCreate([
     { username: 'admin', email: 'admin@example.com', password: hashedPassword, role: 'admin' },
@@ -18,7 +18,7 @@ const seedDatabase = async () => {
   ]);
   console.log('Users seeded!');
 
-  // **2️⃣ Προσθήκη Ταινιών**
+  // ** Προσθήκη Ταινιών**
   const movies = await Movie.bulkCreate([
     { title: 'The Matrix', duration: 136, genre: 'Sci-Fi', release_date: '1999-03-31', poster_url: '/images/matrix.jpg' },
     { title: 'Inception', duration: 148, genre: 'Sci-Fi', release_date: '2010-07-16', poster_url: '/images/inception.jpg' },
@@ -26,7 +26,7 @@ const seedDatabase = async () => {
   ]);
   console.log('Movies seeded!');
 
-  // **3️⃣ Προσθήκη Προβολών (Showtimes)**
+  // ** Προσθήκη Προβολών (Showtimes)**
   const showtimes = await Showtime.bulkCreate([
     { movie_id: 1, hall: '1', start_time: '2025-06-10 18:00:00', available_seats: 50 },
     { movie_id: 1, hall: '2', start_time: '2025-06-10 21:00:00', available_seats: 50 },
@@ -35,7 +35,7 @@ const seedDatabase = async () => {
   ]);
   console.log('Showtimes seeded!');
 
-  // **4️⃣ Προσθήκη Κρατήσεων**
+  // ** Προσθήκη Κρατήσεων**
   const reservations = await Reservation.bulkCreate([
     { showtime_id: 1, seat: 'A5', user_id: 2 },
     { showtime_id: 1, seat: 'A6', user_id: 3 },
@@ -44,7 +44,7 @@ const seedDatabase = async () => {
   ]);
   console.log('Reservations seeded!');
 
-  // **5️⃣ Ενημέρωση διαθέσιμων θέσεων για κάθε προβολή**
+  // ** Ενημέρωση διαθέσιμων θέσεων για κάθε προβολή**
   for (const showtime of showtimes) {
     const reservedSeatsCount = await Reservation.count({ where: { showtime_id: showtime.id } });
     await showtime.update({ available_seats: 50 - reservedSeatsCount });

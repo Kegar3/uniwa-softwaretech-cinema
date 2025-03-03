@@ -1,0 +1,7 @@
+/* MovieCarousel.css */
+.carousel .slide img {
+  width: auto; /* Ensure the image fills the container width */
+  height: 400px; /* Set a fixed height */
+  object-fit: cover; /* Ensure the image covers the container while maintaining aspect ratio */
+  border-radius: 10px;
+}

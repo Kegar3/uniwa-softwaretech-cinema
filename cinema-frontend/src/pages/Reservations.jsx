@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import "./Reservations.css"; //styling
 
 const Reservations = () => {
@@ -67,7 +68,7 @@ const Reservations = () => {
         const token = localStorage.getItem("token");
 
         if (!token) {
-            alert("User not authenticated.");
+            toast.error("User not authenticated.");
             return;
         }
 
@@ -86,9 +87,10 @@ const Reservations = () => {
             if (!response.ok) throw new Error("Failed to cancel reservation");
 
             setReservations(reservations.filter(res => res.id !== reservationId)); // Αφαιρεί τη κράτηση από το UI
+            toast.success("Reservation cancelled successfully!");
         } catch (err) {
             console.error("Error canceling reservation:", err);
-            alert("Failed to cancel reservation.");
+            toast.error("Failed to cancel reservation.");
         }
     };
 

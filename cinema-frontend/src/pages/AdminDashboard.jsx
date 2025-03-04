@@ -40,7 +40,7 @@ const AdminDashboard = () => {
               {stats.reservationsByMovie.map((movie, index) => (
                 <li key={index}>
                   {movie.Showtime.Movie.title} - {movie.total_reservations}{" "}
-                  reservations
+                  reservation(s)
                 </li>
               ))}
             </ul>

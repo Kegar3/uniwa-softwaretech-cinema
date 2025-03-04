@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import "./Seats.css"; //styling
 
 const Seats = () => {
@@ -50,14 +51,14 @@ const Seats = () => {
 
     const handleConfirmBooking = async () => {
         if (!selectedSeat) {
-            alert("Please select one seat.");
+            toast.error("Please select one seat.");
             return;
         }
 
         const token = localStorage.getItem("token");
 
         if (!token) {
-            alert("User not authenticated. Please log in again.");
+            toast.error("User not authenticated. Please log in again.");
             return;
         }
 
@@ -92,11 +93,11 @@ const Seats = () => {
             const data = await response.json();
             if (!response.ok) throw new Error(data.error || "Booking failed");
 
-            alert(`Reservation confirmed for seat ${selectedSeat}!`);
+            toast.success(`Reservation confirmed for seat ${selectedSeat}!`);
             navigate("/reservations");
         } catch (error) {
             console.error("Error booking seat:", error);
-            alert("Failed to confirm reservation.");
+            toast.error("Failed to confirm reservation.");
         }
     };
 

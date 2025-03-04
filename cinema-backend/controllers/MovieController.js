@@ -7,7 +7,11 @@ const movieService = new MovieService(movieRepository, showtimeRepository);
 class MovieController {
   async createMovie(req, res) {
     try {
-      const movie = await movieService.createMovie(req.body);
+      const movieData = req.body;
+      if (req.file) {
+        movieData.poster_url = `/images/${req.file.filename}`; // Save the file path
+      }
+      const movie = await movieService.createMovie(movieData);
       res.status(201).json(movie);
     } catch (error) {
       res.status(400).json({ error: error.message });

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "mocha \"test/**/*.test.cjs\""
+    "test": "mocha"
   },
   "keywords": [],
   "author": "",
@@ -22,8 +22,12 @@
     "sequelize": "^6.37.5"
   },
   "devDependencies": {
-    "chai": "^5.1.2",
+    "@babel/core": "^7.26.9",
+    "@babel/preset-env": "^7.26.9",
+    "@babel/register": "^7.25.9",
+    "chai": "^5.2.0",
     "mocha": "^11.1.0",
-    "sinon": "^19.0.2"
+    "sinon": "^19.0.2",
+    "supertest": "^7.0.0"
   }
 }
